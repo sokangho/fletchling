@@ -32,6 +32,8 @@ namespace Fletchling.Api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Fletchling.Api", Version = "v1" });
             });
+
+            services.RegisterBindings();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
