@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>320de415-1862-4c11-a47d-f2ec2ac88f24</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
@@ -10,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Fletchling.Data\Fletchling.Data.csproj" />
+    <ProjectReference Include="..\Fletchling.Twitter\Fletchling.Twitter.csproj" />
   </ItemGroup>
 
   <ItemGroup>

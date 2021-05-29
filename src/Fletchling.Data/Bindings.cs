@@ -16,6 +16,6 @@ namespace Fletchling.Data
             services.AddTransient<IClientRepository, ClientRepository>();
 
             return services;
-        }        
+        }
     }
 }
