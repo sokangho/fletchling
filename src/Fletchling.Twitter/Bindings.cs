@@ -16,6 +16,7 @@ namespace Fletchling.Twitter
             services.AddScoped<ITwitterClient>(f => new TwitterClient(twitterCreds));
 
             services.AddTransient<TwitterSearchUser>();
+            services.AddTransient<ITwitterService, TwitterService>();
 
             return services;
         }
