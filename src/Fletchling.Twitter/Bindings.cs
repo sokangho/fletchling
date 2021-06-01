@@ -6,7 +6,7 @@ using Tweetinvi.Models;
 
 namespace Fletchling.Twitter
 {
-    public static class bindings
+    public static class Bindings
     {
         public static IServiceCollection RegisterTwitterServices(this IServiceCollection services, IConfiguration config)
         {
