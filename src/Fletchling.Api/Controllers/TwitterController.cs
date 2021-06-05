@@ -17,7 +17,7 @@ namespace Fletchling.Api.Controllers
             _twitterService = twitterService;
         }
 
-        [Route("/user/search")]
+        [Route("user/search")]
         [HttpGet]
         public async Task<ActionResult<List<User>>> Get(string username)
         {
