@@ -49,7 +49,7 @@ const Search = () => {
   };
 
   return (
-    <div ref={node} className='w-64'>
+    <div ref={node} className='w-96'>
       <SearchBox handleChange={autoSearchUser} onClick={showSearchResult} />
       {shouldRender && <SearchResult username={usernameQuery} />}
     </div>
