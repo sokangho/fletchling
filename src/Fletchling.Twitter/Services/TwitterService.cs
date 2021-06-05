@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tweetinvi;
-using Tweetinvi.Models;
 
 namespace Fletchling.Twitter.Services
 {
@@ -26,7 +25,9 @@ namespace Fletchling.Twitter.Services
                 {
                     Id = user.Id,
                     Username = user.ScreenName,
-                    DisplayName = user.Name
+                    DisplayName = user.Name,
+                    Verified = user.Verified,                    
+                    ProfileImageUrl = user.ProfileImageUrl
                 });
             }
             
