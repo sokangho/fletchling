@@ -1,20 +1,17 @@
+import { TwitterTimelineEmbed } from 'react-twitter-embed';
+
 interface Props {
   username: string;
 }
 
 const Timeline = ({ username }: Props) => {
-  const href = `https://twitter.com/${username}?ref_src=twsrc%5Etfw`;
-
   return (
-    <a
-      className='twitter-timeline'
-      data-width='350'
-      data-height='800'
-      data-dnt='true'
-      data-theme='dark'
-      href={href}>
-      Tweets by {username}
-    </a>
+    <TwitterTimelineEmbed
+      sourceType='profile'
+      screenName={username}
+      theme='dark'
+      options={{ height: 400, width: 350 }}
+    />
   );
 };
 
