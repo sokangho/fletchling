@@ -9,6 +9,7 @@ const Search = () => {
   const [usernameQuery, setUsernameQuery] = useState('');
   const node = useRef<HTMLDivElement>(null);
 
+  // Register event listeners
   useEffect(() => {
     document.addEventListener('mousedown', hideSearchResult);
 
@@ -17,6 +18,7 @@ const Search = () => {
     };
   }, []);
 
+  // Render SearchResult when usernameQuery is not empty
   useEffect(() => {
     if (usernameQuery.length > 0) {
       setShouldRender(true);
@@ -25,14 +27,16 @@ const Search = () => {
     }
   }, [usernameQuery]);
 
+  // Hide SearchResult when click outside of Search area
   const hideSearchResult = (e: MouseEvent) => {
     if (node.current && !node.current.contains(e.target as Node)) {
       setShouldRender(false);
     }
   };
 
+  // Only change usernameQuery after user has stopped typing for 1 second
   const delayedChangeUsername = useCallback(
-    debounce((username: string) => setUsernameQuery(username), 1000),
+    debounce((username: string) => setUsernameQuery(username), 800),
     []
   );
 
@@ -40,9 +44,13 @@ const Search = () => {
     delayedChangeUsername(e.target.value);
   };
 
+  const showSearchResult = () => {
+    setShouldRender(true);
+  };
+
   return (
-    <div ref={node}>
-      <SearchBox handleChange={autoSearchUser} />
+    <div ref={node} className='w-64'>
+      <SearchBox handleChange={autoSearchUser} onClick={showSearchResult} />
       {shouldRender && <SearchResult username={usernameQuery} />}
     </div>
   );
