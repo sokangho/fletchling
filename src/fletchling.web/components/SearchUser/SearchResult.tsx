@@ -26,9 +26,13 @@ const WrappingDiv = ({ children }: WrappingDivProps) => {
 
 const SearchResult = ({ username }: Props) => {
   const shouldFetch = username.length > 0 ? true : false;
-  const { data, error } = useSWR(shouldFetch ? `/twitter/?username=${username}` : null, fetcher);
+  const { data, error } = useSWR(
+    shouldFetch ? `/twitter/user/search?username=${username}` : null,
+    fetcher,
+    { shouldRetryOnError: false }
+  );
 
-  if (error) return <div>failed to load</div>;
+  if (error) return <WrappingDiv>failed to load</WrappingDiv>;
 
   // Loading
   if (!data) {
