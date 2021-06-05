@@ -3,7 +3,7 @@ interface User {
   username: string;
   displayName: string;
   verified: boolean;
-  url: string;
+  profileUrl: string;
   profileImageUrl: string;
 }
 
