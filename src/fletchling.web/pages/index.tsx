@@ -1,9 +1,9 @@
-import Layout from '../components/Layout';
-import SearchBox from '../components/SearchUser/SearchBox';
+import Layout from '@/components/Layout';
+import Search from '@/components/SearchUser/Search';
 
 const IndexPage = () => (
   <Layout title='Home'>
-    <SearchBox />
+    <Search />
   </Layout>
 );
 

@@ -9,7 +9,9 @@ interface Props {
 }
 
 const SearchResult = ({ username }: Props) => {
-  const { data, error } = useSWR(`/twitter/?username=${username}`, fetcher);
+  const shouldFetch = username.length > 0 ? true : false;
+
+  const { data, error } = useSWR(shouldFetch ? `/twitter/?username=${username}` : null, fetcher);
 
   if (error) return <div>failed to load</div>;
   if (!data) return <div>Loading...</div>;
