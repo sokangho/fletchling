@@ -3,9 +3,6 @@ import firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
 
-console.log('auth');
-console.log(process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN);
-
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -16,7 +13,23 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 };
 
-const app = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
+const firebaseApp = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
 const twitterProvider = new firebase.auth.TwitterAuthProvider();
 
-export { app, twitterProvider };
+function twitterSignIn() {
+  firebaseApp
+    .auth()
+    .signInWithPopup(twitterProvider)
+    .then((result) => console.log(result))
+    .catch((error) => console.log(error));
+}
+
+function signOut() {
+  firebaseApp
+    .auth()
+    .signOut()
+    .then(() => console.log('test'))
+    .catch((error) => console.log(error));
+}
+
+export { firebaseApp, signOut, twitterProvider, twitterSignIn };

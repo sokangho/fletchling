@@ -13,7 +13,6 @@ const Timeline = ({ username }: Props) => {
   const { savedTimelines, setSavedTimelines } = useContext(TimelineContext);
 
   const onTimeLineLoaded = () => {
-    console.log('test');
     setIsLoaded(true);
   };
 

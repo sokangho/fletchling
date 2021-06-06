@@ -2,8 +2,14 @@ import 'tailwindcss/tailwind.css';
 
 import type { AppProps } from 'next/app';
 
+import AuthProvider from '@/components/Context/AuthProvider';
+
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    <AuthProvider>
+      <Component {...pageProps} />
+    </AuthProvider>
+  );
 }
 
 export default MyApp;
