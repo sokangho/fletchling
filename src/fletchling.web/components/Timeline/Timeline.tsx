@@ -10,7 +10,7 @@ const Timeline = ({ username }: Props) => {
       sourceType='profile'
       screenName={username}
       theme='dark'
-      options={{ height: 400, width: 350 }}
+      options={{ height: 650, width: 350 }}
     />
   );
 };
