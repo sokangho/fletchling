@@ -1,8 +1,8 @@
 import Image from 'next/image';
 import { useContext } from 'react';
 
+import TimelineContext from '@/components/Context/TimelineContext';
 import HeartIcon from '@/components/HeartIcon';
-import TimelineContext from '@/components/TimelineContext';
 import VerifiedBadge from '@/components/TwitterVerifiedBadge';
 import User from '@/interfaces/User';
 

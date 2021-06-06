@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
 import { TwitterTimelineEmbed } from 'react-twitter-embed';
 
-import HeartIcon from '../HeartIcon';
-import TimelineContext from '../TimelineContext';
+import TimelineContext from '@/components/Context/TimelineContext';
+import HeartIcon from '@/components/HeartIcon';
 
 interface Props {
   username: string;

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
+import TimelineContext from '@/components/Context/TimelineContext';
 import Timeline from '@/components/Timeline/Timeline';
-import TimelineContext from '@/components/TimelineContext';
 
 const TimelineList = () => {
   const { savedTimelines } = useContext(TimelineContext);
