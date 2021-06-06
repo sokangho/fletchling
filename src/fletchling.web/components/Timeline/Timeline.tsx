@@ -39,7 +39,7 @@ const Timeline = ({ username }: Props) => {
         noHeader
         noFooter
         onLoad={onTimeLineLoaded}
-        options={{ height: 650, width: 350 }}
+        options={{ height: 500, width: 350 }}
       />
     </div>
   );
