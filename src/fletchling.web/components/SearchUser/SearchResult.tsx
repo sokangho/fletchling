@@ -34,6 +34,8 @@ const SearchResult = ({ username }: Props) => {
     { shouldRetryOnError: false, revalidateOnFocus: false }
   );
 
+  if (!shouldFetch) return null;
+
   if (error) return <WrappingDiv>failed to load</WrappingDiv>;
 
   // Loading
