@@ -21,7 +21,9 @@ interface WrappingDivProps {
 }
 
 const WrappingDiv = ({ children }: WrappingDivProps) => {
-  return <div className='p-4 bg-gray-300 border-1 border-gray-500 '>{children}</div>;
+  return (
+    <div className='absolute w-full p-4 bg-gray-300 border-1 border-gray-500 '>{children}</div>
+  );
 };
 
 const SearchResult = ({ username }: Props) => {
@@ -29,7 +31,7 @@ const SearchResult = ({ username }: Props) => {
   const { data, error } = useSWR(
     shouldFetch ? `/twitter/user/search?username=${username}` : null,
     fetcher,
-    { shouldRetryOnError: false }
+    { shouldRetryOnError: false, revalidateOnFocus: false }
   );
 
   if (error) return <WrappingDiv>failed to load</WrappingDiv>;
@@ -49,7 +51,7 @@ const SearchResult = ({ username }: Props) => {
   }
 
   return (
-    <div className='h-96 overflow-y-auto overflow-x-hidden'>
+    <div className='absolute h-96 overflow-y-auto overflow-x-hidden'>
       {data.map((user: User, i: number) => (
         <UserResult user={user} key={i} />
       ))}
