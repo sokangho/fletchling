@@ -1,7 +1,8 @@
-import { ReactChild, ReactChildren } from 'react';
+import { ReactChild, ReactChildren, useContext } from 'react';
 import BeatLoader from 'react-spinners/ClipLoader';
 import useSWR from 'swr';
 
+import AuthContext from '@/components/Context/AuthContext';
 import UserResult from '@/components/SearchUser/UserResult';
 import User from '@/interfaces/User';
 import { fetcher } from '@/lib/axios';
@@ -27,10 +28,14 @@ const WrappingDiv = ({ children }: WrappingDivProps) => {
 };
 
 const SearchResult = ({ username }: Props) => {
+  const { currentUser } = useContext(AuthContext);
+  const token = currentUser?.token;
+
   const shouldFetch = username.length > 0 ? true : false;
+
   const { data, error } = useSWR(
     shouldFetch ? `/twitter/user/search?username=${username}` : null,
-    fetcher,
+    (url) => fetcher(url, token),
     { shouldRetryOnError: false, revalidateOnFocus: false }
   );
 

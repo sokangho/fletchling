@@ -12,9 +12,13 @@ const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     const unsubscribe = firebaseApp.auth().onAuthStateChanged((user) => {
-      user
-        ? setCurrentUser({ currentUser: { uid: user.uid } })
-        : setCurrentUser({ currentUser: null });
+      if (user) {
+        user.getIdToken(true).then((token) => {
+          setCurrentUser({ currentUser: { uid: user.uid, token: token } });
+        });
+      } else {
+        setCurrentUser({ currentUser: null });
+      }
     });
 
     return unsubscribe;

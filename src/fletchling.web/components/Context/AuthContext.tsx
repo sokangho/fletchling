@@ -1,7 +1,10 @@
 import { createContext } from 'react';
 
 export interface AuthUser {
-  currentUser: Record<string, unknown> | null;
+  currentUser: {
+    uid: string;
+    token: string;
+  } | null;
 }
 
 const AuthContext = createContext<AuthUser>({ currentUser: null });

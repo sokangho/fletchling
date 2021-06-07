@@ -1,11 +1,19 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
+import assign from 'lodash/assign';
 
-const instance = axios.create({
+const baseConfig: AxiosRequestConfig = {
   baseURL: 'https://localhost:5001/api',
-  timeout: 10000 // 10 seconds
-});
+  timeout: 10000 // 10 seconds,
+};
 
-const fetcher = (url: string) => instance.get(url).then((res) => res.data);
+const fetcher = (url: string, token: string | undefined) => {
+  let config = assign({}, baseConfig);
 
-export default instance;
+  if (token) {
+    config = assign({ headers: { Authorization: `Bearer ${token}` } }, baseConfig);
+  }
+
+  return axios.get(url, config).then((res) => res.data);
+};
+
 export { fetcher };
