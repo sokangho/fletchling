@@ -1,11 +1,14 @@
 ﻿using Fletchling.Twitter.Models;
 using Fletchling.Twitter.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Fletchling.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class TwitterController : ControllerBase

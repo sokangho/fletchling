@@ -9,7 +9,7 @@ namespace Fletchling.Api
     {
         public static IServiceCollection RegisterBindings(this IServiceCollection services, IConfiguration config)
         {
-            services.RegisterDatabase();
+            services.RegisterDatabase(config);
             services.RegisterTwitterServices(config);
 
             return services;
