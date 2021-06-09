@@ -58,7 +58,7 @@ const SearchResult = ({ username }: Props) => {
   }
 
   return (
-    <div className='absolute h-96 overflow-y-auto overflow-x-hidden'>
+    <div className='absolute w-full max-h-96 overflow-y-auto overflow-x-hidden'>
       {data.map((user: User, i: number) => (
         <UserResult user={user} key={i} />
       ))}

@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
-import { TwitterTimelineEmbed } from 'react-twitter-embed';
+import { Timeline as TimelineWidget } from 'react-twitter-widgets';
 
+// import { TwitterTimelineEmbed } from 'react-twitter-embed';
 import TimelineContext from '@/components/Context/TimelineContext';
 import HeartIcon from '@/components/HeartIcon';
 
@@ -31,14 +32,11 @@ const Timeline = ({ username }: Props) => {
           </span>
         </div>
       )}
-      <TwitterTimelineEmbed
-        sourceType='profile'
-        screenName={username}
-        theme='dark'
-        noHeader
-        noFooter
+
+      <TimelineWidget
+        dataSource={{ sourceType: 'profile', screenName: username }}
+        options={{ chrome: 'noheader, nofooter', theme: 'dark', width: '350', height: '500' }}
         onLoad={onTimeLineLoaded}
-        options={{ height: 500, width: 350 }}
       />
     </div>
   );
