@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.IdentityModel.Protocols;
-using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -24,11 +22,6 @@ namespace Fletchling.Api
         public void ConfigureServices(IServiceCollection services)
         {
             var firebaseProjectId = Configuration["Firebase:ProjectId"];
-
-            var issuer = $"https://securetoken.google.com/{firebaseProjectId}";
-            var configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
-                    $"{issuer}/.well-known/openid-configuration",
-                    new OpenIdConnectConfigurationRetriever());
 
             services
                 .AddAuthentication(options =>
@@ -71,13 +64,12 @@ namespace Fletchling.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fletchling.Api v1"));
             }
 
+            app.UseHttpsRedirection();
+            app.UseRouting();
             app.UseCors(options =>
                 options.WithOrigins("http://localhost:3000")
                     .AllowAnyMethod()
                     .AllowAnyHeader());
-
-            app.UseHttpsRedirection();
-            app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endpoints =>

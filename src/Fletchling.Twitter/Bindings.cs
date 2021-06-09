@@ -10,9 +10,13 @@ namespace Fletchling.Twitter
     {
         public static IServiceCollection RegisterTwitterServices(this IServiceCollection services, IConfiguration config)
         {
-            var twitterCreds = new TwitterCredentials(config["TwitterCredentials:ConsumerKey"], config["TwitterCredentials:ConsumerSecretKey"]
-                ,config["TwitterCredentials:AccessToken"], config["TwitterCredentials:AccessTokenSecret"]);            
-            services.AddScoped<ITwitterClient>(f => new TwitterClient(twitterCreds));
+            var twitterCredentials = new TwitterCredentials();
+            config.GetSection("TwitterCredentials").Bind(twitterCredentials);
+            services.AddSingleton(twitterCredentials);
+
+            services.AddHttpContextAccessor();
+            services.AddScoped<ITwitterClientFactory, TwitterClientFactory>();
+            services.AddScoped<ITwitterClient>(x => x.GetService<ITwitterClientFactory>().Create());
             
             services.AddTransient<ITwitterService, TwitterService>();
 
