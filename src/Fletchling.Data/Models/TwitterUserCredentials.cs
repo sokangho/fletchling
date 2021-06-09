@@ -6,12 +6,12 @@ namespace Fletchling.Data.Models
     public class TwitterUserCredentials
     {
         [FirestoreProperty]
-        public string UserId { get; set; }
+        public long UserId { get; set; }
 
         [FirestoreProperty]
         public string AccessToken { get; set; }
 
         [FirestoreProperty]
-        public string AccessTokenSecret { get; set; }
+        public string AccessTokenSecret { get; set; }        
     }
 }

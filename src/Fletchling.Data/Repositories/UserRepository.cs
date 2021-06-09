@@ -16,7 +16,7 @@ namespace Fletchling.Data.Repositories
         public async Task AddUser(TwitterUserCredentials credentials)
         {
             CollectionReference collection = _firestoreDb.Collection("users");
-            DocumentReference docRef = collection.Document(credentials.UserId);
+            DocumentReference docRef = collection.Document(credentials.UserId.ToString());
 
             await docRef.SetAsync(credentials);
         }
