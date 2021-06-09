@@ -15,7 +15,7 @@ namespace Fletchling.Data
             services.AddSingleton<FirestoreDb>(f => FirestoreDb.Create(config["Firebase:ProjectId"]));
             Console.Write(config["Firebase:ProjectId"]);
 
-            services.AddTransient<IClientRepository, ClientRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
 
             return services;
         }
