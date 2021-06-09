@@ -17,14 +17,16 @@ namespace Fletchling.Twitter.Services
 
         public TwitterClient Create()
         {
+            var credentials = new TwitterCredentials(_credentials);
+
             // Replace with authenticated user's Twitter credentials
             if (_contextAccessor.HttpContext.User.Identity.IsAuthenticated)
             {
-                _credentials.AccessToken = "test";
-                _credentials.AccessTokenSecret = "test2";
+                credentials.AccessToken = "test";
+                credentials.AccessTokenSecret = "test2";
             }
 
-            return new TwitterClient(_credentials);
+            return new TwitterClient(credentials);
         }
     }
 }
