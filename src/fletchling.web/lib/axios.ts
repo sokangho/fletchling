@@ -6,6 +6,8 @@ const baseConfig: AxiosRequestConfig = {
   timeout: 10000 // 10 seconds,
 };
 
+const instance = axios.create(baseConfig);
+
 const fetcher = (url: string, token: string | undefined) => {
   let config = assign({}, baseConfig);
 
@@ -16,4 +18,5 @@ const fetcher = (url: string, token: string | undefined) => {
   return axios.get(url, config).then((res) => res.data);
 };
 
+export default instance;
 export { fetcher };

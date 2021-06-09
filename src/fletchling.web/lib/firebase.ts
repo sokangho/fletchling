@@ -3,6 +3,9 @@ import firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
 
+import axios from '@/lib/axios';
+import UserCredentials from '@/interfaces/UserCredentials';
+
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -20,7 +23,18 @@ function twitterSignIn() {
   firebaseApp
     .auth()
     .signInWithPopup(twitterProvider)
-    .then((result) => console.log(result))
+    .then((result) => {
+      const credentials: UserCredentials = {
+        userId: result.additionalUserInfo?.profile.id,
+        accessToken: result.credential.accessToken,
+        accessTokenSecret: result.credential.secret
+      };
+
+      axios.post('/user', credentials).catch((error) => {
+        console.log(error);
+        signOut();
+      });
+    })
     .catch((error) => console.log(error));
 }
 
@@ -28,7 +42,6 @@ function signOut() {
   firebaseApp
     .auth()
     .signOut()
-    .then(() => console.log('test'))
     .catch((error) => console.log(error));
 }
 
