@@ -1,10 +1,11 @@
 /* eslint-disable simple-import-sort/imports */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import firebase from 'firebase/app';
 import 'firebase/analytics';
 import 'firebase/auth';
 
 import axios from '@/lib/axios';
-import UserCredentials from '@/interfaces/UserCredentials';
+import User from '@/interfaces/User';
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -24,16 +25,22 @@ function twitterSignIn() {
     .auth()
     .signInWithPopup(twitterProvider)
     .then((result) => {
-      const credentials: UserCredentials = {
-        userId: result.additionalUserInfo?.profile.id,
-        accessToken: result.credential.accessToken,
-        accessTokenSecret: result.credential.secret
-      };
+      if (result.additionalUserInfo?.isNewUser) {
+        const credentials: User = {
+          uid: result.user?.uid as string,
+          // @ts-ignore
+          twitterUserId: result.additionalUserInfo?.profile?.id,
+          // @ts-ignore
+          accessToken: result.credential?.accessToken,
+          // @ts-ignore
+          accessTokenSecret: result.credential?.secret
+        };
 
-      axios.post('/user', credentials).catch((error) => {
-        console.log(error);
-        signOut();
-      });
+        axios.post('/user', credentials).catch((error) => {
+          console.log(error);
+          signOut();
+        });
+      }
     })
     .catch((error) => console.log(error));
 }

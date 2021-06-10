@@ -4,7 +4,7 @@ import useSWR from 'swr';
 
 import AuthContext from '@/components/Context/AuthContext';
 import UserResult from '@/components/SearchUser/UserResult';
-import User from '@/interfaces/User';
+import TwitterUser from '@/interfaces/TwitterUser';
 import { fetcher } from '@/lib/axios';
 
 const BeatLoaderCss = `
@@ -59,7 +59,7 @@ const SearchResult = ({ username }: Props) => {
 
   return (
     <div className='absolute w-full max-h-96 overflow-y-auto overflow-x-hidden'>
-      {data.map((user: User, i: number) => (
+      {data.map((user: TwitterUser, i: number) => (
         <UserResult user={user} key={i} />
       ))}
     </div>

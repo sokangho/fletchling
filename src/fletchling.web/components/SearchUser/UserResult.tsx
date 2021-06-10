@@ -4,10 +4,10 @@ import { useContext } from 'react';
 import TimelineContext from '@/components/Context/TimelineContext';
 import HeartIcon from '@/components/HeartIcon';
 import VerifiedBadge from '@/components/TwitterVerifiedBadge';
-import User from '@/interfaces/User';
+import TwitterUser from '@/interfaces/TwitterUser';
 
 interface Props {
-  user: User;
+  user: TwitterUser;
 }
 
 const UserResult = ({ user }: Props) => {

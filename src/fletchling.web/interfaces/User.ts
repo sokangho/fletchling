@@ -1,10 +1,8 @@
 interface User {
-  id: bigint;
-  username: string;
-  displayName: string;
-  verified: boolean;
-  profileUrl: string;
-  profileImageUrl: string;
+  uid: string;
+  twitterUserId: bigint;
+  accessToken: string;
+  accessTokenSecret: string;
 }
 
 export default User;
