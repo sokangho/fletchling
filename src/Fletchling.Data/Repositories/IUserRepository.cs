@@ -5,6 +5,7 @@ namespace Fletchling.Data.Repositories
 {
     public interface IUserRepository
     {
-        Task AddUser(TwitterUserCredentials credentials);
+        Task AddUserAsync(User user);
+        Task<User> GetUserAsync(string uid);
     }
 }

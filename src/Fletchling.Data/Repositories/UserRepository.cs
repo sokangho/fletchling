@@ -13,12 +13,24 @@ namespace Fletchling.Data.Repositories
             _firestoreDb = firestoreDb;
         }
         
-        public async Task AddUser(TwitterUserCredentials credentials)
+        public async Task AddUserAsync(User user)
         {
             CollectionReference collection = _firestoreDb.Collection("users");
-            DocumentReference docRef = collection.Document(credentials.UserId.ToString());
+            DocumentReference docRef = collection.Document(user.UID.ToString());
 
-            await docRef.SetAsync(credentials);
+            await docRef.SetAsync(user);
+        }
+
+        public async Task<User> GetUserAsync(string uid)
+        {
+            DocumentReference docRef = _firestoreDb.Collection("users").Document(uid);
+            DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
+
+            if (snapshot.Exists)
+            {
+                return snapshot.ConvertTo<User>();
+            }
+            return null;
         }
     }
 }

@@ -19,11 +19,11 @@ namespace Fletchling.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddUser(TwitterUserCredentials credentials)
+        public async Task<ActionResult> AddUser(User user)
         {
             try
             {
-                await _clientRepository.AddUser(credentials);
+                await _clientRepository.AddUserAsync(user);
             } catch (Exception ex)
             {
                 Console.WriteLine(ex);

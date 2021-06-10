@@ -17,4 +17,8 @@
     <None Remove="Microsoft.Extensions.Configuration.Binder" />
     <None Remove="Microsoft.AspNetCore.Http" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fletchling.Data\Fletchling.Data.csproj" />
+  </ItemGroup>
 </Project>
