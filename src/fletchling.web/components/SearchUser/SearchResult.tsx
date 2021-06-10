@@ -1,5 +1,5 @@
 import { ReactChild, ReactChildren, useContext } from 'react';
-import BeatLoader from 'react-spinners/ClipLoader';
+import ClipLoader from 'react-spinners/ClipLoader';
 import useSWR from 'swr';
 
 import AuthContext from '@/components/Context/AuthContext';
@@ -7,7 +7,7 @@ import UserResult from '@/components/SearchUser/UserResult';
 import TwitterUser from '@/interfaces/TwitterUser';
 import { fetcher } from '@/lib/axios';
 
-const BeatLoaderCss = `
+const ClipLoaderCss = `
   display: block;
   margin: 0 auto;
   size: 10px;
@@ -47,7 +47,7 @@ const SearchResult = ({ username }: Props) => {
   if (!data) {
     return (
       <WrappingDiv>
-        <BeatLoader loading={true} css={BeatLoaderCss} size={30} color='grey' />
+        <ClipLoader loading={true} css={ClipLoaderCss} size={30} color='grey' />
       </WrappingDiv>
     );
   }
