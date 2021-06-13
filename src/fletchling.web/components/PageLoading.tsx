@@ -1,7 +1,12 @@
+import { useContext } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
 
+import GlobalStateContext from './Context/GlobalStateContext';
+
 const PageLoading = () => {
-  const isLoading = false;
+  const {
+    globalState: { isLoading }
+  } = useContext(GlobalStateContext);
 
   if (isLoading) {
     return (

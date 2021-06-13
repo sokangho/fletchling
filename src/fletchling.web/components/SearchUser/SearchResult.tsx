@@ -2,7 +2,7 @@ import { ReactChild, ReactChildren, useContext } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
 import useSWR from 'swr';
 
-import AuthContext from '@/components/Context/AuthContext';
+import GlobalStateContext from '@/components/Context/GlobalStateContext';
 import UserResult from '@/components/SearchUser/UserResult';
 import TwitterUser from '@/interfaces/TwitterUser';
 import { fetcher } from '@/lib/axios';
@@ -28,7 +28,9 @@ const WrappingDiv = ({ children }: WrappingDivProps) => {
 };
 
 const SearchResult = ({ username }: Props) => {
-  const { currentUser } = useContext(AuthContext);
+  const {
+    globalState: { currentUser }
+  } = useContext(GlobalStateContext);
   const token = currentUser?.token;
 
   const shouldFetch = username.length > 0 ? true : false;

@@ -20,7 +20,8 @@ const firebaseConfig = {
 const firebaseApp = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
 const twitterProvider = new firebase.auth.TwitterAuthProvider();
 
-function twitterSignIn() {
+async function twitterSignIn() {
+  console.log('started');
   firebaseApp
     .auth()
     .signInWithPopup(twitterProvider)
@@ -45,7 +46,7 @@ function twitterSignIn() {
     .catch((error) => console.log(error));
 }
 
-function signOut() {
+async function signOut() {
   firebaseApp
     .auth()
     .signOut()
