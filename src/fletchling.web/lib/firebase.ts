@@ -21,36 +21,40 @@ const firebaseApp = firebase.apps.length ? firebase.app() : firebase.initializeA
 const twitterProvider = new firebase.auth.TwitterAuthProvider();
 
 async function twitterSignIn() {
-  console.log('started');
-  firebaseApp
-    .auth()
-    .signInWithPopup(twitterProvider)
-    .then((result) => {
-      if (result.additionalUserInfo?.isNewUser) {
-        const credentials: User = {
-          uid: result.user?.uid as string,
-          // @ts-ignore
-          twitterUserId: result.additionalUserInfo?.profile?.id,
-          // @ts-ignore
-          accessToken: result.credential?.accessToken,
-          // @ts-ignore
-          accessTokenSecret: result.credential?.secret
-        };
+  try {
+    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
 
-        axios.post('/user', credentials).catch((error) => {
-          console.log(error);
-          signOut();
-        });
+    const result = await firebaseApp.auth().signInWithPopup(twitterProvider);
+
+    if (result.additionalUserInfo?.isNewUser) {
+      const credentials: User = {
+        uid: result.user?.uid as string,
+        // @ts-ignore
+        twitterUserId: result.additionalUserInfo?.profile?.id,
+        // @ts-ignore
+        accessToken: result.credential?.accessToken,
+        // @ts-ignore
+        accessTokenSecret: result.credential?.secret
+      };
+
+      try {
+        await axios.post('/user', credentials);
+      } catch (error) {
+        console.log(error);
+        await signOut();
       }
-    })
-    .catch((error) => console.log(error));
+    }
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function signOut() {
-  firebaseApp
-    .auth()
-    .signOut()
-    .catch((error) => console.log(error));
+  // Force user to re-enter credentials again
+  twitterProvider.setCustomParameters({
+    force_login: true
+  });
+  await firebaseApp.auth().signOut();
 }
 
 export { firebaseApp, signOut, twitterProvider, twitterSignIn };

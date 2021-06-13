@@ -12,9 +12,9 @@ const TwitterAuthButton = () => {
     setGlobalState({ ...globalState, isLoading: true });
 
     if (globalState.currentUser) {
-      signOut();
+      await signOut();
     } else {
-      twitterSignIn();
+      await twitterSignIn();
     }
   };
 
