@@ -1,15 +1,25 @@
-import Link from 'next/link'
-import Layout from '../components/Layout'
+import { useMemo, useState } from 'react';
 
-const IndexPage = () => (
-  <Layout title="Home | Next.js + TypeScript Example">
-    <h1>Hello Next.js 👋</h1>
-    <p>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
-    </p>
-  </Layout>
-)
+import TimelineContext from '@/components/Context/TimelineContext';
+import Layout from '@/components/Layout';
+import Search from '@/components/SearchUser/Search';
+import TimelineList from '@/components/Timeline/TimelineList';
 
-export default IndexPage
+const IndexPage = () => {
+  const [savedTimelines, setSavedTimelines] = useState<string[]>([] as string[]);
+  const contextValue = useMemo(
+    () => ({ savedTimelines, setSavedTimelines }),
+    [savedTimelines, setSavedTimelines]
+  );
+
+  return (
+    <Layout title='Home'>
+      <TimelineContext.Provider value={contextValue}>
+        <Search />
+        <TimelineList />
+      </TimelineContext.Provider>
+    </Layout>
+  );
+};
+
+export default IndexPage;
