@@ -16,6 +16,7 @@ namespace Fletchling.Data
             Console.Write(config["Firebase:ProjectId"]);
 
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<ITimelineRepository, TimelineRepository>();
 
             return services;
         }

@@ -11,11 +11,11 @@ namespace Fletchling.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _clientRepository;
+        private readonly IUserRepository _userRepo;
 
-        public UserController(IUserRepository clientRepository)
+        public UserController(IUserRepository userRepo)
         {
-            _clientRepository = clientRepository;
+            _userRepo = userRepo;
         }
 
         [HttpPost]
@@ -23,8 +23,9 @@ namespace Fletchling.Api.Controllers
         {
             try
             {
-                await _clientRepository.AddUserAsync(user);
-            } catch (Exception ex)
+                await _userRepo.AddUserAsync(user);
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 return StatusCode(StatusCodes.Status500InternalServerError);

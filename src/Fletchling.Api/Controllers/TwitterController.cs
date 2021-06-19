@@ -19,7 +19,7 @@ namespace Fletchling.Api.Controllers
 
         [Route("user/search")]
         [HttpGet]
-        public async Task<ActionResult<List<User>>> SearchUser(string username)
+        public async Task<ActionResult<List<TwitterUser>>> SearchUser(string username)
         {
             var res = await _twitterService.SearchUsersAsync(username);
             return res;

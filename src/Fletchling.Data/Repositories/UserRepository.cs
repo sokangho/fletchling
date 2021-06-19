@@ -15,15 +15,15 @@ namespace Fletchling.Data.Repositories
         
         public async Task AddUserAsync(User user)
         {
-            CollectionReference collection = _firestoreDb.Collection("users");
-            DocumentReference docRef = collection.Document(user.UID.ToString());
+            CollectionReference colRef = _firestoreDb.Collection(FirestoreConstants.UsersCollection);
+            DocumentReference docRef = colRef.Document(user.UID.ToString());
 
             await docRef.SetAsync(user);
         }
 
         public async Task<User> GetUserAsync(string uid)
         {
-            DocumentReference docRef = _firestoreDb.Collection("users").Document(uid);
+            DocumentReference docRef = _firestoreDb.Collection(FirestoreConstants.UsersCollection).Document(uid);
             DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
 
             if (snapshot.Exists)
