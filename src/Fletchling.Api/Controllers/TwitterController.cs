@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Fletchling.Twitter.Models;
 using Fletchling.Twitter.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Fletchling.Api.Controllers

@@ -1,4 +1,6 @@
+using Fletchling.Api.Authorization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -43,6 +45,13 @@ namespace Fletchling.Api
                         ValidateLifetime = true
                     };
                 });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("OwnerPolicy", policy => policy.AddRequirements(new IsOwnerRequirement()));
+            });
+
+            services.AddSingleton<IAuthorizationHandler, IsOwnerAuthorizationHandler>();
 
             services.AddCors();
             services.AddControllers();
