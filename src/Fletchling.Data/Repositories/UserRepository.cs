@@ -1,5 +1,6 @@
 ﻿using Fletchling.Data.Models;
 using Google.Cloud.Firestore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Fletchling.Data.Repositories
@@ -15,10 +16,22 @@ namespace Fletchling.Data.Repositories
         
         public async Task AddUserAsync(User user)
         {
-            CollectionReference colRef = _firestoreDb.Collection(FirestoreConstants.UsersCollection);
-            DocumentReference docRef = colRef.Document(user.UID.ToString());
+            // Create new User document
+            CollectionReference usersColRef = _firestoreDb.Collection(FirestoreConstants.UsersCollection);
+            DocumentReference userDocRef = usersColRef.Document(user.UID.ToString());
+            await userDocRef.SetAsync(user);
 
-            await docRef.SetAsync(user);
+            // Initialise TimelineGroups Collection inside the newly created User document
+            CollectionReference timelineGroupsColRef = _firestoreDb
+                                                            .Collection(FirestoreConstants.UsersCollection)
+                                                            .Document(userDocRef.Id)
+                                                            .Collection(FirestoreConstants.TimelineGroupsCollection);
+            var timelineGroup = new TimelineGroup
+            {
+                Name = "All",
+                Timelines = new List<string>()
+            };
+            await timelineGroupsColRef.AddAsync(timelineGroup);                        
         }
 
         public async Task<User> GetUserAsync(string uid)
@@ -30,7 +43,9 @@ namespace Fletchling.Data.Repositories
             {
                 return snapshot.ConvertTo<User>();
             }
-            return null;
+
+            // TODO: handle exception better
+            throw new KeyNotFoundException("User not found.");
         }
     }
 }

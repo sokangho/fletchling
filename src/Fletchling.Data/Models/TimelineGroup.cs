@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Fletchling.Data.Models
 {
     [FirestoreData]
-    public class TimelineCollection
+    public class TimelineGroup
     {
         [FirestoreProperty]
         public string Name { get; set; }

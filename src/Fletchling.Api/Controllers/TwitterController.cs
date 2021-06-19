@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Fletchling.Twitter.Models;
+﻿using Fletchling.Twitter.Models;
 using Fletchling.Twitter.Services;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Fletchling.Api.Controllers
 {
@@ -20,7 +20,7 @@ namespace Fletchling.Api.Controllers
 
         [Route("user/search")]
         [HttpGet]
-        public async Task<ActionResult<List<TwitterUser>>> SearchUser(string username)
+        public async Task<ActionResult<List<TwitterUser>>> SearchUser([FromQuery, Required] string username)
         {
             var res = await _twitterService.SearchUsersAsync(username);
             return res;
