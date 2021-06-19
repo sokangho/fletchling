@@ -1,9 +1,12 @@
 ﻿using Fletchling.Api.Models;
+using Fletchling.Data.Models;
 using Fletchling.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Fletchling.Api.Controllers
@@ -22,6 +25,15 @@ namespace Fletchling.Api.Controllers
             _timelineRepo = timelineRepo;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<TimelineGroup>> GetTimelinesByGroup([FromQuery, Required] string timelineGroupName)
+        {
+            var uid = User.Claims.Where(x => x.Type == "user_id").Select(x => x.Value).FirstOrDefault();
+
+            var result = await _timelineRepo.GetTimelineGroupByNameAsync(uid, timelineGroupName);
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> AddTimelineToGroup([FromBody] TimelineRequest request)
         {
@@ -34,7 +46,7 @@ namespace Fletchling.Api.Controllers
 
             try
             {
-                await _timelineRepo.AddTimelineToGroup(request.UID, request.TwitterUsername, request.GroupName);
+                await _timelineRepo.AddTimelineToGroupAsync(request.UID, request.TwitterUsername, request.GroupName);
             }
             catch (Exception ex)
             {
@@ -58,7 +70,7 @@ namespace Fletchling.Api.Controllers
 
             try
             {
-                await _timelineRepo.RemoveTimelineFromGroup(request.UID, request.TwitterUsername, request.GroupName);
+                await _timelineRepo.RemoveTimelineFromGroupAsync(request.UID, request.TwitterUsername, request.GroupName);
             }
             catch (Exception ex)
             {
@@ -67,6 +79,29 @@ namespace Fletchling.Api.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
             
+            return Ok();
+        }
+
+        [HttpPatch]
+        public async Task<IActionResult> SetTimelinesInGroup([FromBody] TimelineRequest request)
+        {
+            var authResult = await _authService.AuthorizeAsync(User, request, "OwnerPolicy");
+
+            if (!authResult.Succeeded)
+            {
+                return new ForbidResult();
+            }
+
+            try
+            {
+                await _timelineRepo.SetTimelinesInGroupAsync(request.UID, request.Timelines);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
             return Ok();
         }
     }

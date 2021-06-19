@@ -1,7 +1,6 @@
 import { useContext, useState } from 'react';
 import { Timeline as TimelineWidget } from 'react-twitter-widgets';
 
-// import { TwitterTimelineEmbed } from 'react-twitter-embed';
 import TimelineContext from '@/components/Context/TimelineContext';
 import HeartIcon from '@/components/HeartIcon';
 
@@ -11,7 +10,7 @@ interface Props {
 
 const Timeline = ({ username }: Props) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const { savedTimelines, setSavedTimelines } = useContext(TimelineContext);
+  const { savedTimelines, updateSavedTimelines } = useContext(TimelineContext);
 
   const onTimeLineLoaded = () => {
     setIsLoaded(true);
@@ -19,7 +18,7 @@ const Timeline = ({ username }: Props) => {
 
   const removeTimeLine = () => {
     const arr = savedTimelines.filter((a) => a !== username);
-    setSavedTimelines(arr);
+    updateSavedTimelines(arr);
   };
 
   return (

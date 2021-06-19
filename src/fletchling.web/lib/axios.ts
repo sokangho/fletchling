@@ -8,15 +8,25 @@ const baseConfig: AxiosRequestConfig = {
 
 const instance = axios.create(baseConfig);
 
-const fetcher = (url: string, token: string | undefined) => {
+async function fetcher<T>(url: string, token: string | undefined) {
   let config = assign({}, baseConfig);
 
   if (token) {
     config = assign({ headers: { Authorization: `Bearer ${token}` } }, baseConfig);
   }
 
-  return axios.get(url, config).then((res) => res.data);
-};
+  return axios.get<T>(url, config).then((res) => res.data);
+}
+
+async function patcher<T>(url: string, data: T, token: string | undefined) {
+  let config = assign({}, baseConfig);
+
+  if (token) {
+    config = assign({ headers: { Authorization: `Bearer ${token}` } }, baseConfig);
+  }
+
+  return axios.patch(url, data, config).then((res) => res.data);
+}
 
 export default instance;
-export { fetcher };
+export { fetcher, patcher };

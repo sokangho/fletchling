@@ -37,7 +37,7 @@ const SearchResult = ({ username }: Props) => {
 
   const { data, error } = useSWR(
     shouldFetch ? `/twitter/user/search?username=${username}` : null,
-    (url) => fetcher(url, token),
+    (url) => fetcher<TwitterUser[]>(url, token),
     { shouldRetryOnError: false, revalidateOnFocus: false }
   );
 

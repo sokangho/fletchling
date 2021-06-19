@@ -19,14 +19,16 @@ const firebaseConfig = {
 
 const firebaseApp = firebase.apps.length ? firebase.app() : firebase.initializeApp(firebaseConfig);
 const twitterProvider = new firebase.auth.TwitterAuthProvider();
+twitterProvider.setCustomParameters({
+  force_login: true
+});
 
 async function twitterSignIn() {
   try {
-    await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
-
     const result = await firebaseApp.auth().signInWithPopup(twitterProvider);
 
     if (result.additionalUserInfo?.isNewUser) {
+      // Ignore typescript below because Firebase library is poorly typed
       const credentials: User = {
         uid: result.user?.uid as string,
         // @ts-ignore
@@ -50,10 +52,6 @@ async function twitterSignIn() {
 }
 
 async function signOut() {
-  // Force user to re-enter credentials again
-  twitterProvider.setCustomParameters({
-    force_login: true
-  });
   await firebaseApp.auth().signOut();
 }
 

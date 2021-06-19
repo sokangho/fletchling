@@ -11,9 +11,9 @@ interface Props {
 }
 
 const UserResult = ({ user }: Props) => {
-  const { savedTimelines, setSavedTimelines } = useContext(TimelineContext);
+  const { savedTimelines, updateSavedTimelines } = useContext(TimelineContext);
 
-  const handleOnClick = () => {
+  const handleOnClick = async () => {
     let arr: string[] = [];
 
     if (isSaved()) {
@@ -22,7 +22,7 @@ const UserResult = ({ user }: Props) => {
       arr = savedTimelines.concat(user.username);
     }
 
-    setSavedTimelines(arr);
+    await updateSavedTimelines(arr);
   };
 
   const isSaved = () => savedTimelines.includes(user.username);
@@ -47,7 +47,12 @@ const UserResult = ({ user }: Props) => {
           <div className='font-light'>@{user.username}</div>
         </div>
 
-        <HeartIcon isSaved={isSaved()} onClick={handleOnClick} />
+        <HeartIcon
+          isSaved={isSaved()}
+          onClick={async () => {
+            await handleOnClick();
+          }}
+        />
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
-import { createContext, Dispatch, SetStateAction } from 'react';
+import { createContext } from 'react';
 
 interface SavedTimelines {
   savedTimelines: string[];
-  setSavedTimelines: Dispatch<SetStateAction<string[]>>;
+  updateSavedTimelines: (savedTimelines: string[]) => Promise<void>;
 }
 
 const TimelineContext = createContext<SavedTimelines>({} as SavedTimelines);
