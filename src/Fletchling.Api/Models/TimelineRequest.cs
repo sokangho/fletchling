@@ -1,5 +1,4 @@
-﻿using ExpressiveAnnotations.Attributes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Fletchling.Api.Models
@@ -9,10 +8,7 @@ namespace Fletchling.Api.Models
         [Required]
         public string UID { get; set; }
 
-        [RequiredIf("Timelines == null")]
-        public string TwitterUsername { get; set; }
-
-        [RequiredIf("TwitterUsername == null")]
+        [Required]
         public List<string> Timelines { get; set; }   
 
         [Required]

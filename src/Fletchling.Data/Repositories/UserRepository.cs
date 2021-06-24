@@ -1,4 +1,5 @@
-﻿using Fletchling.Data.Models;
+﻿using Fletchling.Data.Exceptions;
+using Fletchling.Data.Models;
 using Google.Cloud.Firestore;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -43,9 +44,8 @@ namespace Fletchling.Data.Repositories
             {
                 return snapshot.ConvertTo<User>();
             }
-
-            // TODO: handle exception better
-            throw new KeyNotFoundException("User not found.");
+            
+            throw new DataNotFoundException($"User with uid: {uid} not found.");
         }
     }
 }

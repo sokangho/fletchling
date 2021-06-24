@@ -123,12 +123,10 @@ namespace Fletchling.Api
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fletchling.Api v1"));
             }
-            else
-            {
-                // Custom exception handling middleware
-                app.UseMiddleware<ExceptionMiddleware>();
-            }
 
+            // Custom exception handling middleware
+            app.UseMiddleware<ExceptionMiddleware>();
+  
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors(options =>

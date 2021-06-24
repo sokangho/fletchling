@@ -1,9 +1,11 @@
 ﻿using Fletchling.Api.Exceptions;
 using Fletchling.Api.Models;
+using Fletchling.Data.Exceptions;
 using Fletchling.Data.Models;
 using Fletchling.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
@@ -34,34 +36,6 @@ namespace Fletchling.Api.Controllers
             return Ok(result);
         }
 
-        [HttpPost]
-        public async Task<ActionResult> AddTimelineToGroup([FromBody] TimelineRequest request)
-        {
-            var authResult = await _authService.AuthorizeAsync(User, request, "OwnerPolicy");
-
-            if (!authResult.Succeeded)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "No permission to add timeline.");
-            }
-
-            await _timelineRepo.AddTimelineToGroupAsync(request.UID, request.TwitterUsername, request.GroupName);
-            return Ok();
-        }
-
-        [HttpDelete]
-        public async Task<ActionResult> RemoveTimelineFromGroup([FromBody] TimelineRequest request)
-        {
-            var authResult = await _authService.AuthorizeAsync(User, request, "OwnerPolicy");
-
-            if (!authResult.Succeeded)
-            {
-                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "No permission to remove timeline.");            
-            }
-
-            await _timelineRepo.RemoveTimelineFromGroupAsync(request.UID, request.TwitterUsername, request.GroupName);
-            return Ok();
-        }
-
         [HttpPatch]
         public async Task<ActionResult> SetTimelinesInGroup([FromBody] TimelineRequest request)
         {
@@ -71,8 +45,16 @@ namespace Fletchling.Api.Controllers
             {
                 throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "No permission to set timeline.");
             }
-                
-            await _timelineRepo.SetTimelinesInGroupAsync(request.UID, request.Timelines);
+
+            try
+            {
+                await _timelineRepo.SetTimelinesInGroupAsync(request.UID, request.Timelines, request.GroupName);
+            }
+            catch (DataNotFoundException ex)
+            {
+                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ex.Message); 
+            }
+            
             return Ok();
         }
     }

@@ -1,4 +1,5 @@
-﻿using Fletchling.Data.Repositories;
+﻿using Fletchling.Data.Exceptions;
+using Fletchling.Data.Repositories;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using Tweetinvi;
@@ -28,9 +29,17 @@ namespace Fletchling.Twitter.Services
             if (userContext.Identity.IsAuthenticated)
             {
                 var uid = userContext.Claims.Where(x => x.Type == "user_id").Select(x => x.Value).FirstOrDefault();
-                var user = _userRepo.GetUserAsync(uid).GetAwaiter().GetResult();
-                credentials.AccessToken = user.AccessToken;
-                credentials.AccessTokenSecret = user.AccessTokenSecret;
+
+                try
+                {
+                    var user = _userRepo.GetUserAsync(uid).GetAwaiter().GetResult();
+                    credentials.AccessToken = user.AccessToken;
+                    credentials.AccessTokenSecret = user.AccessTokenSecret;                    
+                }
+                catch (DataNotFoundException)
+                {
+                    // swallow user not found exception and use the default twitter credential
+                }
             }
 
             return new TwitterClient(credentials);

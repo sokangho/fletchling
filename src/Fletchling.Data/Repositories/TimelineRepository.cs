@@ -1,5 +1,7 @@
-﻿using Fletchling.Data.Models;
+﻿using Fletchling.Data.Exceptions;
+using Fletchling.Data.Models;
 using Google.Cloud.Firestore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,25 +31,8 @@ namespace Fletchling.Data.Repositories
             {
                 return snapshot.Documents[0].ConvertTo<TimelineGroup>();
             }
-
-            // TODO: Handle exception better
-            throw new KeyNotFoundException("Collection Name does not exist");
-        }
-
-        public async Task AddTimelineToGroupAsync(string uid, string twitterUsername, string groupName = "All")
-        {
-            var timelineGroup = await GetTimelineGroupByNameAsync(uid, groupName);
-            var timelineGroupRef = timelineGroup.Reference;
-
-            await timelineGroupRef.UpdateAsync(FirestoreConstants.TimelineGroupTimelines, FieldValue.ArrayUnion(twitterUsername));                                       
-        }
-
-        public async Task RemoveTimelineFromGroupAsync(string uid, string twitterUsername, string groupName = "All")
-        {
-            var timelineGroup = await GetTimelineGroupByNameAsync(uid, groupName);
-            var timelineGroupRef = timelineGroup.Reference;
-
-            await timelineGroupRef.UpdateAsync(FirestoreConstants.TimelineGroupTimelines, FieldValue.ArrayRemove(twitterUsername));  
+            
+            throw new DataNotFoundException($"Timeline group with name: '{timelineGroupName}' for uid: '{uid}' does not exist.");
         }
 
         public async Task SetTimelinesInGroupAsync(string uid, List<string> timelines, string groupName = "All")
