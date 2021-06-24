@@ -22,7 +22,7 @@ namespace Fletchling.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<List<TwitterUser>>> SearchUser([FromQuery, Required] string username)
         {
-            var res = await _twitterService.SearchUsersAsync(username);
+            var res = await _twitterService.SearchUsersAsync(username);            
             return res;
         }
     }

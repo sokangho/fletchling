@@ -1,12 +1,12 @@
-﻿using Fletchling.Api.Models;
+﻿using Fletchling.Api.Exceptions;
+using Fletchling.Api.Models;
 using Fletchling.Data.Models;
 using Fletchling.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 
 namespace Fletchling.Api.Controllers
@@ -35,73 +35,44 @@ namespace Fletchling.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddTimelineToGroup([FromBody] TimelineRequest request)
+        public async Task<ActionResult> AddTimelineToGroup([FromBody] TimelineRequest request)
         {
             var authResult = await _authService.AuthorizeAsync(User, request, "OwnerPolicy");
 
             if (!authResult.Succeeded)
             {
-                return new ForbidResult();
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "No permission to add timeline.");
             }
 
-            try
-            {
-                await _timelineRepo.AddTimelineToGroupAsync(request.UID, request.TwitterUsername, request.GroupName);
-            }
-            catch (Exception ex)
-            {
-                // TODO: Handle exception better
-                Console.WriteLine(ex);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-
+            await _timelineRepo.AddTimelineToGroupAsync(request.UID, request.TwitterUsername, request.GroupName);
             return Ok();
         }
 
         [HttpDelete]
-        public async Task<IActionResult> RemoveTimelineFromGroup([FromBody] TimelineRequest request)
+        public async Task<ActionResult> RemoveTimelineFromGroup([FromBody] TimelineRequest request)
         {
             var authResult = await _authService.AuthorizeAsync(User, request, "OwnerPolicy");
 
             if (!authResult.Succeeded)
             {
-                return new ForbidResult();
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "No permission to remove timeline.");            
             }
 
-            try
-            {
-                await _timelineRepo.RemoveTimelineFromGroupAsync(request.UID, request.TwitterUsername, request.GroupName);
-            }
-            catch (Exception ex)
-            {
-                // TODO: Handle exception better
-                Console.WriteLine(ex);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-            
+            await _timelineRepo.RemoveTimelineFromGroupAsync(request.UID, request.TwitterUsername, request.GroupName);
             return Ok();
         }
 
         [HttpPatch]
-        public async Task<IActionResult> SetTimelinesInGroup([FromBody] TimelineRequest request)
+        public async Task<ActionResult> SetTimelinesInGroup([FromBody] TimelineRequest request)
         {
             var authResult = await _authService.AuthorizeAsync(User, request, "OwnerPolicy");
 
             if (!authResult.Succeeded)
             {
-                return new ForbidResult();
+                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "No permission to set timeline.");
             }
-
-            try
-            {
-                await _timelineRepo.SetTimelinesInGroupAsync(request.UID, request.Timelines);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-
+                
+            await _timelineRepo.SetTimelinesInGroupAsync(request.UID, request.Timelines);
             return Ok();
         }
     }

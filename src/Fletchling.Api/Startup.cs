@@ -1,13 +1,18 @@
 using Fletchling.Api.Authorization;
+using Fletchling.Api.Middlewares;
+using Fletchling.Api.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Fletchling.Api
 {
@@ -22,16 +27,11 @@ namespace Fletchling.Api
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            var firebaseProjectId = Configuration["Firebase:ProjectId"];
-
-            
-
-            services.AddSingleton<IAuthorizationHandler, IsOwnerAuthorizationHandler>();
-
+        {            
             services.AddCors();
             services.AddControllers();
 
+            // Add and configure Swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Fletchling.Api", Version = "v1" });
@@ -59,7 +59,9 @@ namespace Fletchling.Api
                     }
                 });
             });
-            
+                        
+            // Add and configure JWT authentication
+            var firebaseProjectId = Configuration["Firebase:ProjectId"];
             services
                 .AddAuthentication(options =>
                 {
@@ -79,13 +81,36 @@ namespace Fletchling.Api
                         ValidAudience = firebaseProjectId,
                         ValidateLifetime = true
                     };
+                    // Add custom error message on authentication fails
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnChallenge = context =>
+                        {
+                            var res = new ErrorResponse
+                            {
+                                StatusCode = (int)HttpStatusCode.Unauthorized,
+                                ErrorMessage = "JWT token is missing or invalid."
+                            };
+
+                            // Add response body for 401 error
+                            context.Response.OnStarting(async () =>
+                            {
+                                await context.Response.WriteAsJsonAsync(res);
+                            });
+
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
 
+            // Add and configure authorization
+            services.AddSingleton<IAuthorizationHandler, IsOwnerAuthorizationHandler>();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("OwnerPolicy", policy => policy.AddRequirements(new IsOwnerRequirement()));
             });
 
+            // Register custom services 
             services.RegisterBindings(Configuration);
         }
 
@@ -97,6 +122,11 @@ namespace Fletchling.Api
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fletchling.Api v1"));
+            }
+            else
+            {
+                // Custom exception handling middleware
+                app.UseMiddleware<ExceptionMiddleware>();
             }
 
             app.UseHttpsRedirection();
