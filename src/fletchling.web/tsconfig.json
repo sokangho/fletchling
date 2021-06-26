@@ -21,7 +21,8 @@
     "paths": {
       "@/lib/*": ["lib/*"],
       "@/components/*": ["components/*"],
-      "@/interfaces/*": ["interfaces/*"]
+      "@/interfaces/*": ["interfaces/*"],
+      "@/public/*": ["public/*"]
     }
   },
   "exclude": ["node_modules"],
