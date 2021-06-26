@@ -6,6 +6,9 @@ module.exports = {
       colors: {
         'primary-dark': '#1A1A1B',
         'twitter-dark': '#292F33'
+      },
+      minWidth: {
+        80: '20rem'
       }
     }
   },

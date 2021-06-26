@@ -37,7 +37,7 @@ const UserProfileMenu = ({ user }: Props) => {
     <div className='relative' ref={menuOptionsRef}>
       <button
         onClick={toggleMenu}
-        className='flex items-center gap-x-1 py-1 px-2 border border-opacity-0 hover:border-opacity-50'>
+        className='flex items-center w-48 gap-x-1 py-1 px-2 border border-opacity-0 hover:border-opacity-50'>
         <Image
           src={user.profileImageUrl}
           alt='Profile Image'
@@ -46,18 +46,18 @@ const UserProfileMenu = ({ user }: Props) => {
           className='rounded-full'
         />
 
-        <div className='flex-1 mr-5 leading-none text-left'>
-          <div>
-            <span className='font-semibold text-sm text-gray-200 leading-none'>
-              {user.displayName}
-            </span>
+        <div className='flex-1 mr-5 leading-none text-left truncate'>
+          <div className='truncate text-gray-200'>
+            <span className='font-semibold text-sm leading-none'>{user.displayName}</span>
             {/* {user.verified && (
           <span>
             <VerifiedBadge size={10} />
           </span>
         )} */}
           </div>
-          <span className='font-light text-sm text-gray-400 leading-none'>@{user.username}</span>
+          <div className='truncate text-gray-400 font-light text-sm leading-none'>
+            <span>@{user.username}</span>
+          </div>
         </div>
 
         <div className='text-gray-400'>

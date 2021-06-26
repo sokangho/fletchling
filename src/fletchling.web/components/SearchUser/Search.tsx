@@ -49,7 +49,7 @@ const Search = () => {
   };
 
   return (
-    <div ref={node} className='flex-1 relative w-full max-w-3xl'>
+    <div ref={node} className='flex-1 relative min-w-80 max-w-2xl'>
       <SearchBox handleChange={autoSearchUser} onClick={showSearchResult} />
       {shouldRender && <SearchResultList username={usernameQuery} />}
     </div>

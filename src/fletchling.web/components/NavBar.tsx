@@ -13,7 +13,7 @@ const NavBar = () => {
   } = useContext(GlobalStateContext);
 
   return (
-    <div className='flex gap-3 items-center p-2 bg-twitter-dark'>
+    <div className='flex gap-3 justify-between items-center p-2 bg-twitter-dark'>
       <Logo />
       <Search />
       {currentUser && <UserProfileMenu user={currentUser.twitterUser} />}

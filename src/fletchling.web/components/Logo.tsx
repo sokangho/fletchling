@@ -8,8 +8,8 @@ const Logo = () => {
         <Image
           src='/images/fletchling_logo.png'
           alt='Logo'
-          width={40}
-          height={40}
+          width={35}
+          height={35}
           className='bg-red-500 rounded-lg'
         />
 
