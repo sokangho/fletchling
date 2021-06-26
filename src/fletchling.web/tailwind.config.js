@@ -4,6 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        'primary-dark': '#1A1A1B',
         'twitter-dark': '#292F33'
       }
     }

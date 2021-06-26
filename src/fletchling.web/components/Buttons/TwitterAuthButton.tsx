@@ -19,15 +19,17 @@ const TwitterAuthButton = () => {
   };
 
   return (
-    <button
-      className='flex gap-x-3 py-2 px-3 bg-blue-400 rounded-md'
-      onClick={async () => await onClick()}>
-      <div>
-        <FontAwesomeIcon icon={faTwitter} className='text-white' />
+    <button className='flex-none h-8 bg-blue-400 rounded-2xl' onClick={async () => await onClick()}>
+      <div className='flex gap-x-3 px-3'>
+        <div>
+          <FontAwesomeIcon icon={faTwitter} className='text-white' />
+        </div>
+        <span>{globalState.currentUser ? 'Log out' : 'Twitter Log In'}</span>
       </div>
-      <span>{globalState.currentUser ? 'Log out' : 'Sign in with Twitter'}</span>
     </button>
   );
 };
 
 export default TwitterAuthButton;
+
+// inline gap-x-3 py-2 px-3

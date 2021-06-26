@@ -3,7 +3,6 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import GlobalStateContext from '@/components/Context/GlobalStateContext';
 import TimelineContext from '@/components/Context/TimelineContext';
 import Layout from '@/components/Layout';
-import Search from '@/components/SearchUser/Search';
 import TimelineList from '@/components/Timeline/TimelineList';
 import TimelineGroup from '@/interfaces/TimelineGroup';
 import TimelineRequest from '@/interfaces/TimelineRequest';
@@ -35,26 +34,28 @@ const IndexPage = () => {
   }, [currentUser]);
 
   const updateSavedTimelines = async (savedTimelines: string[]) => {
+    // User is signed in, save timeline to db
     if (currentUser) {
       const data: TimelineRequest = {
         uid: currentUser.uid,
         timelines: savedTimelines,
         groupName: 'All'
       };
-      setSavedTimelines(savedTimelines);
       await patcher<TimelineRequest>('/timeline', data, token);
     }
+
+    // Update saved timeline context
+    setSavedTimelines(savedTimelines);
   };
 
   const contextValue = useMemo(() => ({ savedTimelines, updateSavedTimelines }), [savedTimelines]);
 
   return (
-    <Layout title='Home'>
-      <TimelineContext.Provider value={contextValue}>
-        <Search />
+    <TimelineContext.Provider value={contextValue}>
+      <Layout title='Home'>
         <TimelineList />
-      </TimelineContext.Provider>
-    </Layout>
+      </Layout>
+    </TimelineContext.Provider>
   );
 };
 

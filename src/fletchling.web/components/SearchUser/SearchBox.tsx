@@ -14,7 +14,7 @@ const SearchBox = ({ handleChange, onClick }: Props) => {
       onClick={onClick}
       autoComplete='off'
       placeholder='Search for Twitter user...'
-      className='bg-gray-300 border-2 border-black p-3 w-full'
+      className='w-full bg-gray-300 border-2 border-black p-2 rounded-md'
     />
   );
 };
