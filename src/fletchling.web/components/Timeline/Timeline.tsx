@@ -1,8 +1,8 @@
 import { useContext, useState } from 'react';
 import { Timeline as TimelineWidget } from 'react-twitter-widgets';
 
+import HeartButton from '@/components/Buttons/HeartButton';
 import TimelineContext from '@/components/Context/TimelineContext';
-import HeartIcon from '@/components/HeartIcon';
 
 interface Props {
   username: string;
@@ -27,7 +27,7 @@ const Timeline = ({ username }: Props) => {
         <div className='flex justify-between px-2 bg-twitter-dark'>
           <span className='my-auto text-gray-200'>@{username}</span>
           <span>
-            <HeartIcon isSaved={true} onClick={removeTimeLine} />
+            <HeartButton isSaved={true} onClick={removeTimeLine} />
           </span>
         </div>
       )}

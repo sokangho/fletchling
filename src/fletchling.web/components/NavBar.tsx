@@ -1,4 +1,4 @@
-import TwitterAuthButton from '@/components/TwitterAuthButton';
+import TwitterAuthButton from '@/components/Buttons/TwitterAuthButton';
 
 const NavBar = () => {
   return (
