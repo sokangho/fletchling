@@ -34,7 +34,7 @@ const Timeline = ({ username }: Props) => {
 
       <TimelineWidget
         dataSource={{ sourceType: 'profile', screenName: username }}
-        options={{ chrome: 'noheader, nofooter', theme: 'dark', width: '350', height: '500' }}
+        options={{ chrome: 'noheader, nofooter', theme: 'dark', width: '300', height: '450' }}
         onLoad={onTimeLineLoaded}
       />
     </div>

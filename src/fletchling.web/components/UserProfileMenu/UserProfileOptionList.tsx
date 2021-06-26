@@ -13,7 +13,7 @@ const UserProfileOptionList = () => {
       onClick={async () => {
         await onClick();
       }}
-      className='flex gap-x-3 px-4 py-2 bg-twitter-dark absolute w-full border border-opacity-50 hover:bg-gray-600'>
+      className='flex mt-1 gap-x-3 px-4 py-2 bg-twitter-dark absolute w-full border border-opacity-50 hover:bg-gray-600'>
       <div>
         <FontAwesomeIcon icon={faSignOutAlt} className='text-gray-400' />
       </div>

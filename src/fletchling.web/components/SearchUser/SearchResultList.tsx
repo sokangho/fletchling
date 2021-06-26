@@ -22,9 +22,7 @@ interface WrappingDivProps {
 }
 
 const WrappingDiv = ({ children }: WrappingDivProps) => {
-  return (
-    <div className='absolute w-full p-4 bg-gray-300 border-1 border-gray-500 '>{children}</div>
-  );
+  return <div className='absolute w-full mt-1 p-4 bg-gray-600 text-gray-400'>{children}</div>;
 };
 
 const SearchResultList = ({ username }: Props) => {
@@ -60,7 +58,7 @@ const SearchResultList = ({ username }: Props) => {
   }
 
   return (
-    <div className='absolute w-full max-h-96 overflow-y-auto overflow-x-hidden'>
+    <div className='absolute mt-1 w-full max-h-96 overflow-y-auto overflow-x-hidden divide-y divide-gray-500'>
       {data.map((user: TwitterUser, i: number) => (
         <SearchResult user={user} key={i} />
       ))}

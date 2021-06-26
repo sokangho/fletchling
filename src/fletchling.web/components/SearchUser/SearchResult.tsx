@@ -28,7 +28,7 @@ const SearchResult = ({ user }: Props) => {
   const isSaved = () => savedTimelines.includes(user.username);
 
   return (
-    <div className='bg-gray-300 hover:bg-gray-200 p-2 border-2'>
+    <div className='bg-gray-600 hover:bg-gray-700 p-2 border-1'>
       <div className='flex gap-x-2'>
         <div className='flex-shrink-0'>
           <Image
@@ -41,14 +41,14 @@ const SearchResult = ({ user }: Props) => {
         </div>
         <div className='flex-grow'>
           <div className='flex flex-wrap gap-x-1'>
-            <div className='font-semibold'>{user.displayName}</div>
+            <div className='font-semibold text-gray-200'>{user.displayName}</div>
             {user.verified && (
               <div className='flex-grow-0'>
                 <VerifiedBadge />
               </div>
             )}
           </div>
-          <div className='font-light'>@{user.username}</div>
+          <div className='font-light text-gray-400'>@{user.username}</div>
         </div>
 
         <HeartButton
