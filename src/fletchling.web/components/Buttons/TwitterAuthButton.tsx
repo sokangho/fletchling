@@ -31,5 +31,3 @@ const TwitterAuthButton = () => {
 };
 
 export default TwitterAuthButton;
-
-// inline gap-x-3 py-2 px-3

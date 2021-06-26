@@ -36,13 +36,17 @@ const SearchResult = ({ user }: Props) => {
             alt='Profile Image'
             width={48}
             height={48}
-            className='rounded-3xl'
+            className='rounded-full'
           />
         </div>
         <div className='flex-grow'>
           <div className='flex flex-wrap gap-x-1'>
             <div className='font-semibold'>{user.displayName}</div>
-            <div className='flex-grow-0'>{user.verified && <VerifiedBadge />}</div>
+            {user.verified && (
+              <div className='flex-grow-0'>
+                <VerifiedBadge />
+              </div>
+            )}
           </div>
           <div className='font-light'>@{user.username}</div>
         </div>
