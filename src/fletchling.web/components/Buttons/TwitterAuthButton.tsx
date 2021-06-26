@@ -1,21 +1,11 @@
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useContext } from 'react';
 
-import GlobalStateContext from '@/components/Context/GlobalStateContext';
-import { signOut, twitterSignIn } from '@/lib/firebase';
+import { twitterLogIn } from '@/lib/firebase';
 
 const TwitterAuthButton = () => {
-  const { globalState, setGlobalState } = useContext(GlobalStateContext);
-
   const onClick = async () => {
-    setGlobalState({ ...globalState, isLoading: true });
-
-    if (globalState.currentUser) {
-      await signOut();
-    } else {
-      await twitterSignIn();
-    }
+    await twitterLogIn();
   };
 
   return (
@@ -24,7 +14,7 @@ const TwitterAuthButton = () => {
         <div>
           <FontAwesomeIcon icon={faTwitter} className='text-white' />
         </div>
-        <span>{globalState.currentUser ? 'Log out' : 'Twitter Log In'}</span>
+        Twitter Log In
       </div>
     </button>
   );

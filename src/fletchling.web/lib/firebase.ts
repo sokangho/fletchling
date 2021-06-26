@@ -23,7 +23,7 @@ twitterProvider.setCustomParameters({
   force_login: true
 });
 
-async function twitterSignIn() {
+async function twitterLogIn() {
   try {
     const result = await firebaseApp.auth().signInWithPopup(twitterProvider);
 
@@ -43,7 +43,7 @@ async function twitterSignIn() {
         await axios.post('/user', credentials);
       } catch (error) {
         console.log(error);
-        await signOut();
+        await logOut();
       }
     }
   } catch (error) {
@@ -51,8 +51,8 @@ async function twitterSignIn() {
   }
 }
 
-async function signOut() {
+async function logOut() {
   await firebaseApp.auth().signOut();
 }
 
-export { firebaseApp, signOut, twitterProvider, twitterSignIn };
+export { firebaseApp, logOut, twitterLogIn, twitterProvider };
