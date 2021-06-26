@@ -18,12 +18,20 @@ namespace Fletchling.Api.Controllers
             _twitterService = twitterService;
         }
 
+        [Route("user/get")]
+        [HttpGet]
+        public async Task<ActionResult<TwitterUser>> GetTwitterUser([FromQuery, Required] long twitterUserId)
+        {
+            var user = await _twitterService.GetUserAsync(twitterUserId);
+            return user;
+        }
+
         [Route("user/search")]
         [HttpGet]
-        public async Task<ActionResult<List<TwitterUser>>> SearchUser([FromQuery, Required] string username)
+        public async Task<ActionResult<List<TwitterUser>>> SearchTwitterUser([FromQuery, Required] string username)
         {
-            var res = await _twitterService.SearchUsersAsync(username);            
-            return res;
+            var users = await _twitterService.SearchUsersAsync(username);            
+            return users;
         }
     }
 }

@@ -33,5 +33,19 @@ namespace Fletchling.Twitter.Services
             
             return users;
         }
+
+        public async Task<TwitterUser> GetUserAsync(long userId)
+        {
+            var res = await _client.UsersV2.GetUserByIdAsync(userId);
+            var user = new TwitterUser
+            {
+                Id = long.Parse(res.User.Id),
+                Username = res.User.Username,
+                DisplayName = res.User.Name,
+                Verified = res.User.Verified,
+                ProfileImageUrl = res.User.ProfileImageUrl
+            };
+            return user;
+        }
     }
 }
