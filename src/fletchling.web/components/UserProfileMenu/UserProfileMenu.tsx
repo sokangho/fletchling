@@ -55,7 +55,7 @@ const UserProfileMenu = ({ user }: Props) => {
           </span>
         )} */}
           </div>
-          <div className='truncate text-gray-400 font-light text-sm leading-none'>
+          <div className='truncate text-gray-400 font-light text-sm'>
             <span>@{user.username}</span>
           </div>
         </div>
