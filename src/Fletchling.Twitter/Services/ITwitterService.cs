@@ -6,6 +6,7 @@ namespace Fletchling.Twitter.Services
 {
     public interface ITwitterService
     {
-        Task<List<User>> SearchUsersAsync(string username);
+        Task<List<TwitterUser>> SearchUsersAsync(string username);
+        Task<TwitterUser> GetUserAsync(long userId);
     }
 }

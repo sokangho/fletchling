@@ -1,11 +1,18 @@
+using Fletchling.Api.Authorization;
+using Fletchling.Api.Middlewares;
+using Fletchling.Api.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Net;
+using System.Threading.Tasks;
 
 namespace Fletchling.Api
 {
@@ -20,9 +27,41 @@ namespace Fletchling.Api
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
-            var firebaseProjectId = Configuration["Firebase:ProjectId"];
+        {            
+            services.AddCors();
+            services.AddControllers();
 
+            // Add and configure Swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Fletchling.Api", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme."
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] {}
+                    }
+                });
+            });
+                        
+            // Add and configure JWT authentication
+            var firebaseProjectId = Configuration["Firebase:ProjectId"];
             services
                 .AddAuthentication(options =>
                 {
@@ -42,15 +81,36 @@ namespace Fletchling.Api
                         ValidAudience = firebaseProjectId,
                         ValidateLifetime = true
                     };
+                    // Add custom error message on authentication fails
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnChallenge = context =>
+                        {
+                            var res = new ErrorResponse
+                            {
+                                StatusCode = (int)HttpStatusCode.Unauthorized,
+                                ErrorMessage = "JWT token is missing or invalid."
+                            };
+
+                            // Add response body for 401 error
+                            context.Response.OnStarting(async () =>
+                            {
+                                await context.Response.WriteAsJsonAsync(res);
+                            });
+
+                            return Task.CompletedTask;
+                        }
+                    };
                 });
 
-            services.AddCors();
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
+            // Add and configure authorization
+            services.AddSingleton<IAuthorizationHandler, IsOwnerAuthorizationHandler>();
+            services.AddAuthorization(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Fletchling.Api", Version = "v1" });
+                options.AddPolicy("OwnerPolicy", policy => policy.AddRequirements(new IsOwnerRequirement()));
             });
 
+            // Register custom services 
             services.RegisterBindings(Configuration);
         }
 
@@ -64,6 +124,9 @@ namespace Fletchling.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fletchling.Api v1"));
             }
 
+            // Custom exception handling middleware
+            app.UseMiddleware<ExceptionMiddleware>();
+  
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors(options =>

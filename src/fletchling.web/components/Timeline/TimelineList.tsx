@@ -7,7 +7,7 @@ const TimelineList = () => {
   const { savedTimelines } = useContext(TimelineContext);
 
   return (
-    <div className='flex flex-row flex-wrap gap-5 my-10'>
+    <div className='flex flex-row flex-wrap justify-center gap-5 my-5'>
       {savedTimelines.map((username: string) => (
         <Timeline username={username} key={username} />
       ))}

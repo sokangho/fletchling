@@ -1,3 +1,5 @@
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { ChangeEvent, MouseEvent } from 'react';
 
 interface Props {
@@ -7,15 +9,20 @@ interface Props {
 
 const SearchBox = ({ handleChange, onClick }: Props) => {
   return (
-    <input
-      type='text'
-      name='username'
-      onChange={handleChange}
-      onClick={onClick}
-      autoComplete='off'
-      placeholder='Search for Twitter user...'
-      className='bg-gray-300 border-2 border-black p-3 w-full'
-    />
+    <div className='flex w-full bg-gray-600 rounded-md'>
+      <div className='px-4 py-2 text-lg text-gray-400'>
+        <FontAwesomeIcon icon={faSearch} />
+      </div>
+      <input
+        type='text'
+        name='username'
+        onChange={handleChange}
+        onClick={onClick}
+        autoComplete='off'
+        placeholder='Search for Twitter user...'
+        className='w-full bg-gray-600 px-2 py-1 border-0 rounded-md text-gray-200 focus:outline-none'
+      />
+    </div>
   );
 };
 

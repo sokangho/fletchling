@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Fletchling.Twitter.Models;
+﻿using Fletchling.Twitter.Models;
 using Fletchling.Twitter.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace Fletchling.Api.Controllers
 {
@@ -17,12 +18,20 @@ namespace Fletchling.Api.Controllers
             _twitterService = twitterService;
         }
 
+        [Route("user/get")]
+        [HttpGet]
+        public async Task<ActionResult<TwitterUser>> GetTwitterUser([FromQuery, Required] long twitterUserId)
+        {
+            var user = await _twitterService.GetUserAsync(twitterUserId);
+            return user;
+        }
+
         [Route("user/search")]
         [HttpGet]
-        public async Task<ActionResult<List<User>>> SearchUser(string username)
+        public async Task<ActionResult<List<TwitterUser>>> SearchTwitterUser([FromQuery, Required] string username)
         {
-            var res = await _twitterService.SearchUsersAsync(username);
-            return res;
+            var users = await _twitterService.SearchUsersAsync(username);            
+            return users;
         }
     }
 }

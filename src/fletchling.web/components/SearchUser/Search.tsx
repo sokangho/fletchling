@@ -2,7 +2,7 @@ import { debounce } from 'lodash';
 import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import SearchBox from '@/components/SearchUser/SearchBox';
-import SearchResult from '@/components/SearchUser/SearchResult';
+import SearchResultList from '@/components/SearchUser/SearchResultList';
 
 const Search = () => {
   const [shouldRender, setShouldRender] = useState<boolean>(false);
@@ -49,9 +49,9 @@ const Search = () => {
   };
 
   return (
-    <div ref={node} className='w-96 relative mx-auto my-5'>
+    <div ref={node} className='flex-1 relative min-w-80 max-w-2xl'>
       <SearchBox handleChange={autoSearchUser} onClick={showSearchResult} />
-      {shouldRender && <SearchResult username={usernameQuery} />}
+      {shouldRender && <SearchResultList username={usernameQuery} />}
     </div>
   );
 };

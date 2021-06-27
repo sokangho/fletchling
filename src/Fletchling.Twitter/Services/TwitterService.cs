@@ -14,14 +14,14 @@ namespace Fletchling.Twitter.Services
             _client = client;
         }
 
-        public async Task<List<User>> SearchUsersAsync(string username)
+        public async Task<List<TwitterUser>> SearchUsersAsync(string username)
         {
             var res = await _client.Search.SearchUsersAsync(username);
 
-            var users = new List<User>();
+            var users = new List<TwitterUser>();
             foreach (var user in res)
             {
-                users.Add(new User
+                users.Add(new TwitterUser
                 {
                     Id = user.Id,
                     Username = user.ScreenName,
@@ -32,6 +32,20 @@ namespace Fletchling.Twitter.Services
             }
             
             return users;
+        }
+
+        public async Task<TwitterUser> GetUserAsync(long userId)
+        {
+            var res = await _client.UsersV2.GetUserByIdAsync(userId);
+            var user = new TwitterUser
+            {
+                Id = long.Parse(res.User.Id),
+                Username = res.User.Username,
+                DisplayName = res.User.Name,
+                Verified = res.User.Verified,
+                ProfileImageUrl = res.User.ProfileImageUrl
+            };
+            return user;
         }
     }
 }

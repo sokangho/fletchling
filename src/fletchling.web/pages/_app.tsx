@@ -11,6 +11,11 @@ function MyApp({ Component, pageProps }: AppProps) {
       <>
         <PageLoading />
         <Component {...pageProps} />
+        <style jsx global>{`
+          body {
+            background-color: #1a1a1b;
+          }
+        `}</style>
       </>
     </GlobalStateProvider>
   );

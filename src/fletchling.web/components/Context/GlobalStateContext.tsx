@@ -1,10 +1,13 @@
 import { createContext, Dispatch, SetStateAction } from 'react';
 
+import TwitterUser from '@/interfaces/TwitterUser';
+
 export interface GlobalState {
   isLoading: boolean;
   currentUser: {
     uid: string;
     token: string;
+    twitterUser: TwitterUser;
   } | null;
 }
 

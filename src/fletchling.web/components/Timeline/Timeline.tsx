@@ -1,9 +1,8 @@
 import { useContext, useState } from 'react';
 import { Timeline as TimelineWidget } from 'react-twitter-widgets';
 
-// import { TwitterTimelineEmbed } from 'react-twitter-embed';
+import HeartButton from '@/components/Buttons/HeartButton';
 import TimelineContext from '@/components/Context/TimelineContext';
-import HeartIcon from '@/components/HeartIcon';
 
 interface Props {
   username: string;
@@ -11,7 +10,7 @@ interface Props {
 
 const Timeline = ({ username }: Props) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const { savedTimelines, setSavedTimelines } = useContext(TimelineContext);
+  const { savedTimelines, updateSavedTimelines } = useContext(TimelineContext);
 
   const onTimeLineLoaded = () => {
     setIsLoaded(true);
@@ -19,7 +18,7 @@ const Timeline = ({ username }: Props) => {
 
   const removeTimeLine = () => {
     const arr = savedTimelines.filter((a) => a !== username);
-    setSavedTimelines(arr);
+    updateSavedTimelines(arr);
   };
 
   return (
@@ -28,14 +27,14 @@ const Timeline = ({ username }: Props) => {
         <div className='flex justify-between px-2 bg-twitter-dark'>
           <span className='my-auto text-gray-200'>@{username}</span>
           <span>
-            <HeartIcon isSaved={true} onClick={removeTimeLine} />
+            <HeartButton isSaved={true} onClick={removeTimeLine} />
           </span>
         </div>
       )}
 
       <TimelineWidget
         dataSource={{ sourceType: 'profile', screenName: username }}
-        options={{ chrome: 'noheader, nofooter', theme: 'dark', width: '350', height: '500' }}
+        options={{ chrome: 'noheader, nofooter', theme: 'dark', width: '300', height: '450' }}
         onLoad={onTimeLineLoaded}
       />
     </div>

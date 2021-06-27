@@ -4,12 +4,18 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        'primary-dark': '#1A1A1B',
         'twitter-dark': '#292F33'
+      },
+      minWidth: {
+        80: '20rem'
       }
     }
   },
   variants: {
-    extend: {}
+    extend: {
+      borderWidth: ['hover', 'focus']
+    }
   },
   plugins: []
 };

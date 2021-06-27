@@ -1,6 +1,6 @@
 ﻿namespace Fletchling.Twitter.Models
 {
-    public class User
+    public class TwitterUser
     {
         public long Id { get; set; }
         public string Username { get; set; }

@@ -1,8 +1,6 @@
 ﻿using Fletchling.Data.Models;
 using Fletchling.Data.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Threading.Tasks;
 
 namespace Fletchling.Api.Controllers
@@ -11,25 +9,17 @@ namespace Fletchling.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _clientRepository;
+        private readonly IUserRepository _userRepo;
 
-        public UserController(IUserRepository clientRepository)
+        public UserController(IUserRepository userRepo)
         {
-            _clientRepository = clientRepository;
+            _userRepo = userRepo;
         }
 
         [HttpPost]
         public async Task<ActionResult> AddUser(User user)
         {
-            try
-            {
-                await _clientRepository.AddUserAsync(user);
-            } catch (Exception ex)
-            {
-                Console.WriteLine(ex);
-                return StatusCode(StatusCodes.Status500InternalServerError);
-            }
-
+            await _userRepo.AddUserAsync(user);
             return Ok();
         }
     }

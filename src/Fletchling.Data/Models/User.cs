@@ -5,7 +5,7 @@ namespace Fletchling.Data.Models
     [FirestoreData]
     public class User
     {
-        [FirestoreProperty]
+        [FirestoreDocumentId]
         public string UID { get; set; }
 
         [FirestoreProperty]
