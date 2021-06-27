@@ -6,6 +6,7 @@ import SearchResultList from '@/components/SearchUser/SearchResultList';
 
 const Search = () => {
   const [shouldRender, setShouldRender] = useState<boolean>(false);
+  const [username, setUsername] = useState('');
   const [usernameQuery, setUsernameQuery] = useState('');
   const node = useRef<HTMLDivElement>(null);
 
@@ -30,6 +31,8 @@ const Search = () => {
   // Hide SearchResult when click outside of Search area
   const hideSearchResult = (e: MouseEvent) => {
     if (node.current && !node.current.contains(e.target as Node)) {
+      setUsername('');
+      setUsernameQuery('');
       setShouldRender(false);
     }
   };
@@ -41,6 +44,7 @@ const Search = () => {
   );
 
   const autoSearchUser = (e: ChangeEvent<HTMLInputElement>) => {
+    setUsername(e.target.value);
     delayedChangeUsername(e.target.value);
   };
 
@@ -50,8 +54,8 @@ const Search = () => {
 
   return (
     <div ref={node} className='flex-1 relative min-w-80 max-w-2xl'>
-      <SearchBox handleChange={autoSearchUser} onClick={showSearchResult} />
-      {shouldRender && <SearchResultList username={usernameQuery} />}
+      <SearchBox value={username} handleChange={autoSearchUser} onClick={showSearchResult} />
+      {shouldRender && usernameQuery !== '' && <SearchResultList username={usernameQuery} />}
     </div>
   );
 };

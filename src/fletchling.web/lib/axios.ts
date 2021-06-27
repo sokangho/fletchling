@@ -29,4 +29,4 @@ async function patcher<T>(url: string, data: T, token: string | undefined) {
 }
 
 export default instance;
-export { fetcher, patcher };
+export { baseConfig, fetcher, patcher };
