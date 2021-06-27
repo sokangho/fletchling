@@ -1,11 +1,10 @@
 import { ReactChild, ReactChildren, useContext } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
-import useSWR from 'swr';
 
 import GlobalStateContext from '@/components/Context/GlobalStateContext';
 import SearchResult from '@/components/SearchUser/SearchResult';
 import TwitterUser from '@/interfaces/TwitterUser';
-import { fetcher } from '@/lib/axios';
+import useFetch from '@/lib/useFetch';
 
 const ClipLoaderCss = `
   display: block;
@@ -31,20 +30,15 @@ const SearchResultList = ({ username }: Props) => {
   } = useContext(GlobalStateContext);
   const token = currentUser?.token;
 
-  const shouldFetch = username.length > 0 ? true : false;
-
-  const { data, error } = useSWR(
-    shouldFetch ? `/twitter/user/search?username=${username}` : null,
-    (url) => fetcher<TwitterUser[]>(url, token),
-    { shouldRetryOnError: false, revalidateOnFocus: false }
+  const { data, error, loading } = useFetch<TwitterUser[]>(
+    `/twitter/user/search?username=${username}`,
+    token
   );
-
-  if (!shouldFetch) return null;
 
   if (error) return <WrappingDiv>failed to load</WrappingDiv>;
 
   // Loading
-  if (!data) {
+  if (loading) {
     return (
       <WrappingDiv>
         <ClipLoader loading={true} css={ClipLoaderCss} size={30} color='grey' />
@@ -53,13 +47,13 @@ const SearchResultList = ({ username }: Props) => {
   }
 
   // No data
-  if (data.length === 0) {
+  if (data?.length === 0) {
     return <WrappingDiv>No users found</WrappingDiv>;
   }
 
   return (
     <div className='absolute mt-1 w-full max-h-96 overflow-y-auto overflow-x-hidden divide-y divide-gray-500'>
-      {data.map((user: TwitterUser, i: number) => (
+      {data?.map((user: TwitterUser, i: number) => (
         <SearchResult user={user} key={i} />
       ))}
     </div>

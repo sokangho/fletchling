@@ -3,11 +3,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { ChangeEvent, MouseEvent } from 'react';
 
 interface Props {
+  value: string;
   handleChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onClick: (e: MouseEvent<HTMLInputElement>) => void;
 }
 
-const SearchBox = ({ handleChange, onClick }: Props) => {
+const SearchBox = ({ value, handleChange, onClick }: Props) => {
   return (
     <div className='flex w-full bg-gray-600 rounded-md'>
       <div className='px-4 py-2 text-lg text-gray-400'>
@@ -16,6 +17,7 @@ const SearchBox = ({ handleChange, onClick }: Props) => {
       <input
         type='text'
         name='username'
+        value={value}
         onChange={handleChange}
         onClick={onClick}
         autoComplete='off'
