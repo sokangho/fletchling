@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  fletchling.api:
+    image: ${DOCKER_REGISTRY-}fletchling
+    build:
+      context: .
+      dockerfile: Fletchling.Api/Dockerfile

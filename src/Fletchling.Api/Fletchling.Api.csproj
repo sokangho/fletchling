@@ -3,8 +3,11 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>320de415-1862-4c11-a47d-f2ec2ac88f24</UserSecretsId>
+    <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Dev Fletchling.Api' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Release Fletchling.Api' " />
   <ItemGroup>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
