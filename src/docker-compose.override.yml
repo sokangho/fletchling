@@ -10,3 +10,13 @@ services:
     volumes:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
+
+  fletchling.web:
+    build:
+        target: dev
+    environment:
+      - NODE_ENV=development
+    volumes:
+      - ./fletchling.web:/app
+      - /app/node_modules
+      - /app/.next
