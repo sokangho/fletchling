@@ -1,13 +1,13 @@
 version: '3.4'
 
 services:
-  fletchling.api:
+  Api:
     image: ${DOCKER_REGISTRY-}fletchling-api
     build:
       context: ./Api
       dockerfile: ./Fletchling.Api/Dockerfile
 
-  fletchling.web:
+  Web:
     image: ${DOCKER_REGISTRY-}fletchling-web
     build:
       context: ./Web/fletchling.web
@@ -15,5 +15,3 @@ services:
       target: prod
     environment:
       - NODE_ENV=production
-    ports:
-      - "3000:3000"

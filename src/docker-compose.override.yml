@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  fletchling.api:
+  api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443
@@ -13,11 +13,13 @@ services:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
 
-  fletchling.web:
+  web:
     build:
         target: dev
     environment:
       - NODE_ENV=development
+    ports:
+      - "3000:3002"
     volumes:
       - ./Web/fletchling.web:/app
       - /app/node_modules
