@@ -1,13 +1,13 @@
 version: '3.4'
 
 services:
-  Api:
+  api:
     image: ${DOCKER_REGISTRY-}fletchling-api
     build:
       context: ./Api
       dockerfile: ./Fletchling.Api/Dockerfile
 
-  Web:
+  web:
     image: ${DOCKER_REGISTRY-}fletchling-web
     build:
       context: ./Web/fletchling.web
