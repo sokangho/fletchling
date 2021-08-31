@@ -5,6 +5,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443
+    env_file:
+      - ./Api/Fletchling.Api/.env
     ports:
       - "5001:443"
     volumes:
@@ -17,6 +19,6 @@ services:
     environment:
       - NODE_ENV=development
     volumes:
-      - ./fletchling.web:/app
+      - ./Web/fletchling.web:/app
       - /app/node_modules
       - /app/.next
