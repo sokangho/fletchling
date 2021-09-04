@@ -6,6 +6,9 @@ services:
     build:
       context: ./Api
       dockerfile: ./Fletchling.Api/Dockerfile
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Production
     networks:
       - fletchling-network
     restart: on-failure
@@ -28,10 +31,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - 44395:443
-    depends_on:
-      - web
     networks:
       - fletchling-network
+    depends_on:
+      - web
+      - api
 
 networks:
   fletchling-network: {}
