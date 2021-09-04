@@ -1,3 +1,5 @@
+ARG PORT_NUMBER=80
+
 # Install npm dependencies
 FROM node:alpine AS base
 WORKDIR /app
@@ -7,6 +9,9 @@ RUN npm install
 
 # Dev image
 FROM base AS dev
+ARG PORT_NUMBER
+ENV PORT=$PORT_NUMBER
+EXPOSE $PORT
 CMD ["npm", "run", "dev"]
 
 # Rebuild the source code only when needed
@@ -19,6 +24,10 @@ RUN npm run build
 # Production image
 FROM node:alpine AS prod
 ENV NEXT_TELEMETRY_DISABLED 1
+ARG PORT_NUMBER
+ENV PORT=$PORT_NUMBER
+EXPOSE $PORT
+
 WORKDIR /app
 # Copy files
 COPY --from=build /app/next.config.js .
@@ -26,9 +35,11 @@ COPY --from=build /app/public ./public
 COPY --from=build --chown=nextjs:nodejs /app/.next ./.next
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/package.json ./package.json
-# Create non-root user and run NEXT
+
+# Create non-root user
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 USER nextjs
-EXPOSE 3000
+
+# Run NEXT
 CMD ["npm", "run", "start"]

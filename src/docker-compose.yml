@@ -6,6 +6,9 @@ services:
     build:
       context: ./Api
       dockerfile: ./Fletchling.Api/Dockerfile
+    networks:
+      - fletchling-network
+    restart: on-failure
 
   web:
     image: ${DOCKER_REGISTRY-}fletchling-web
@@ -15,3 +18,20 @@ services:
       target: prod
     environment:
       - NODE_ENV=production
+    networks:
+      - fletchling-network
+    restart: on-failure
+
+  reverse-proxy:
+    build:
+      context: ./ReverseProxy
+      dockerfile: Dockerfile
+    ports:
+      - 44395:443
+    depends_on:
+      - web
+    networks:
+      - fletchling-network
+
+networks:
+  fletchling-network: {}

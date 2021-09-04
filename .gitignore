@@ -286,3 +286,6 @@ src/**/inf.yaml
 
 # Environment files
 .env
+
+# certs
+https_certs
