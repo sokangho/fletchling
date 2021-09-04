@@ -1,5 +1,3 @@
-ARG PORT_NUMBER=80
-
 # Install npm dependencies
 FROM node:alpine AS base
 WORKDIR /app
@@ -9,10 +7,7 @@ RUN npm install
 
 # Dev image
 FROM base AS dev
-ARG PORT_NUMBER
-ENV PORT=$PORT_NUMBER
-EXPOSE $PORT
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "dev-docker"]
 
 # Rebuild the source code only when needed
 FROM node:alpine AS build
@@ -24,9 +19,6 @@ RUN npm run build
 # Production image
 FROM node:alpine AS prod
 ENV NEXT_TELEMETRY_DISABLED 1
-ARG PORT_NUMBER
-ENV PORT=$PORT_NUMBER
-EXPOSE $PORT
 
 WORKDIR /app
 # Copy files
@@ -42,4 +34,4 @@ RUN adduser -S nextjs -u 1001
 USER nextjs
 
 # Run NEXT
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start-docker"]
