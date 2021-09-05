@@ -11,6 +11,4 @@ COPY ./https_certs/web-dev.fletchling.com.key /etc/ssl/private/
 COPY ./https_certs/api-dev.fletchling.com.crt /etc/ssl/certs/
 COPY ./https_certs/api-dev.fletchling.com.key /etc/ssl/private/
 
-EXPOSE 443
-
 CMD ["nginx", "-g", "daemon off;"]

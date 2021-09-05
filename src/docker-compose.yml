@@ -35,7 +35,8 @@ services:
       context: ./ReverseProxy
       dockerfile: Dockerfile
     ports:
-      - 44395:443
+      - 80:80
+      - 443:443
     networks:
       - fletchling-network
     depends_on:
