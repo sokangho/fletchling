@@ -4,8 +4,6 @@ services:
   api:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-    env_file:
-      - ./Api/Fletchling.Api/.env
     volumes:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
@@ -15,8 +13,6 @@ services:
       target: dev
     environment:
       - NODE_ENV=development
-    env_file:
-      - ./Web/fletchling.web/.env
     volumes:
       - ./Web/fletchling.web:/app
       - /app/node_modules

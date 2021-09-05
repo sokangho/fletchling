@@ -9,6 +9,8 @@ services:
     environment:
       - ASPNETCORE_URLS=http://+:80
       - ASPNETCORE_ENVIRONMENT=Production
+    env_file:
+      - ./Api/Fletchling.Api/.env
     expose:
       - 80
     networks:
@@ -24,6 +26,8 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=80
+    env_file:
+      - ./Web/fletchling.web/.env
     expose:
       - 80
     networks:
