@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -133,6 +134,8 @@ namespace Fletchling.Api
 
             // Custom exception handling middleware
             app.UseMiddleware<ExceptionMiddleware>();
+
+            app.UseSerilogRequestLogging();
 
             app.UseRouting();
             app.UseCors(options =>

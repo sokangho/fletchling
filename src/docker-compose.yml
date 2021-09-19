@@ -47,5 +47,17 @@ services:
       - web
       - api
 
+  seq:
+    image: datalust/seq:2020.1
+    restart: unless-stopped
+    environment:
+      - ACCEPT_EULA=Y
+    volumes:
+      - D:\temp\logs\fletchling:/data
+    ports:
+      - 8081:80
+    networks:
+      - fletchling-network
+
 networks:
   fletchling-network: {}
