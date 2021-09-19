@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -124,13 +125,18 @@ namespace Fletchling.Api
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fletchling.Api v1"));
             }
 
+            var forwardedHeaderOptions = new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+            };
+            app.UseForwardedHeaders(forwardedHeaderOptions);
+
             // Custom exception handling middleware
             app.UseMiddleware<ExceptionMiddleware>();
-  
-            app.UseHttpsRedirection();
+
             app.UseRouting();
             app.UseCors(options =>
-                options.WithOrigins("http://localhost:3000")
+                options.WithOrigins(Configuration["WebUrl"])
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             app.UseAuthentication();
