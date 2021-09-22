@@ -1,6 +1,6 @@
 ﻿using Tweetinvi;
 
-namespace Fletchling.Twitter.Services
+namespace Fletchling.Business.Contracts
 {
     public interface ITwitterClientFactory
     {

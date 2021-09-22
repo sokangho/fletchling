@@ -22,8 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fletchling.Data\Fletchling.Data.csproj" />
-    <ProjectReference Include="..\Fletchling.Twitter\Fletchling.Twitter.csproj" />
+    <ProjectReference Include="..\Fletchling.Business\Fletchling.Business.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -31,8 +31,8 @@ namespace Fletchling.Data.Repositories
             {
                 return snapshot.Documents[0].ConvertTo<TimelineGroup>();
             }
-            
-            throw new DataNotFoundException($"Timeline group with name: '{timelineGroupName}' for uid: '{uid}' does not exist.");
+
+            return null;
         }
 
         public async Task SetTimelinesInGroupAsync(string uid, List<string> timelines, string groupName = "All")

@@ -1,8 +1,8 @@
 ﻿using Fletchling.Api.Exceptions;
 using Fletchling.Api.Models;
+using Fletchling.Business.Contracts;
 using Fletchling.Data.Exceptions;
 using Fletchling.Data.Models;
-using Fletchling.Data.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
@@ -18,12 +18,12 @@ namespace Fletchling.Api.Controllers
     public class TimelineController : ControllerBase
     {
         private readonly IAuthorizationService _authService;
-        private readonly ITimelineRepository _timelineRepo;
+        private readonly ITimelineService _timelineService;
 
-        public TimelineController(IAuthorizationService authService, ITimelineRepository timelineRepo)
+        public TimelineController(IAuthorizationService authService, ITimelineService timelineService)
         {
             _authService = authService;
-            _timelineRepo = timelineRepo;
+            _timelineService = timelineService;
         }
 
         [HttpGet]
@@ -31,7 +31,7 @@ namespace Fletchling.Api.Controllers
         {
             var uid = User.Claims.Where(x => x.Type == "user_id").Select(x => x.Value).FirstOrDefault();
 
-            var result = await _timelineRepo.GetTimelineGroupByNameAsync(uid, timelineGroupName);
+            var result = await _timelineService.GetTimelinesByGroupAsync(uid, timelineGroupName);
             return Ok(result);
         }
 
@@ -42,16 +42,16 @@ namespace Fletchling.Api.Controllers
 
             if (!authResult.Succeeded)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.Forbidden, "No permission to set timeline.");
+                throw new BusinessException(HttpStatusCode.Forbidden, "No permission to set timeline.");
             }
 
             try
             {
-                await _timelineRepo.SetTimelinesInGroupAsync(request.UID, request.Timelines, request.GroupName);
+                await _timelineService.SetTimelinesInGroupAsync(request.UID, request.Timelines, request.GroupName);
             }
             catch (DataNotFoundException ex)
             {
-                throw new HttpStatusCodeException(HttpStatusCode.NotFound, ex.Message); 
+                throw new BusinessException(HttpStatusCode.NotFound, ex.Message); 
             }
             
             return Ok();

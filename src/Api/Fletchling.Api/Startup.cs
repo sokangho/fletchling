@@ -1,4 +1,5 @@
 using Fletchling.Api.Authorization;
+using Fletchling.Api.Logging;
 using Fletchling.Api.Middlewares;
 using Fletchling.Api.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -142,12 +143,12 @@ namespace Fletchling.Api
             {
                 options.EnrichDiagnosticContext = async (diagosticContext, httpContext) => 
                 { 
-                    await LogHelper.EnrichWithRequestBody(diagosticContext, httpContext); 
+                    await SeriLogEnrichment.EnrichWithRequestDetails(diagosticContext, httpContext); 
                 };
             });
 
             // Custom exception handling middleware
-            app.UseMiddleware<ExceptionMiddleware>();
+            app.UseMiddleware<GlobalExceptionMiddleware>();
 
             app.UseRouting();
             app.UseCors(options =>

@@ -3,11 +3,11 @@ using Serilog;
 using System.IO;
 using System.Threading.Tasks;
 
-namespace Fletchling.Api
+namespace Fletchling.Api.Logging
 {
-    public static class LogHelper
+    public static class SeriLogEnrichment
     {
-        public static async Task EnrichWithRequestBody(IDiagnosticContext diagnosticContext, HttpContext httpContext)
+        public static async Task EnrichWithRequestDetails(IDiagnosticContext diagnosticContext, HttpContext httpContext)
         {
             var request = httpContext.Request;
             diagnosticContext.Set("RequestBody", await ReadyBodyFromRequest(request));

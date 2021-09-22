@@ -1,4 +1,4 @@
-﻿namespace Fletchling.Twitter.Models
+﻿namespace Fletchling.Business.Models
 {
     public class TwitterUser
     {

@@ -1,9 +1,10 @@
-﻿using Fletchling.Twitter.Models;
+﻿using Fletchling.Business.Contracts;
+using Fletchling.Business.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tweetinvi;
 
-namespace Fletchling.Twitter.Services
+namespace Fletchling.Business.Services
 {
     public class TwitterService : ITwitterService
     {
@@ -26,11 +27,11 @@ namespace Fletchling.Twitter.Services
                     Id = user.Id,
                     Username = user.ScreenName,
                     DisplayName = user.Name,
-                    Verified = user.Verified,                    
+                    Verified = user.Verified,
                     ProfileImageUrl = user.ProfileImageUrl
                 });
             }
-            
+
             return users;
         }
 

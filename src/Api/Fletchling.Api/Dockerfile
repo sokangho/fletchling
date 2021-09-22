@@ -6,8 +6,8 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 COPY ["Fletchling.Api/", "Fletchling.Api/"]
+COPY ["Fletchling.Business/", "Fletchling.Business/"]
 COPY ["Fletchling.Data/", "Fletchling.Data/"]
-COPY ["Fletchling.Twitter/", "Fletchling.Twitter/"]
 RUN dotnet restore "Fletchling.Api/Fletchling.Api.csproj"
 WORKDIR "/src/Fletchling.Api"
 RUN dotnet build "Fletchling.Api.csproj" -c Release -o /app/build

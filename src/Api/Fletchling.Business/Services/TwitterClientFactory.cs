@@ -1,11 +1,12 @@
-﻿using Fletchling.Data.Exceptions;
+﻿using Fletchling.Business.Contracts;
+using Fletchling.Data.Exceptions;
 using Fletchling.Data.Repositories;
 using Microsoft.AspNetCore.Http;
 using System.Linq;
 using Tweetinvi;
 using Tweetinvi.Models;
 
-namespace Fletchling.Twitter.Services
+namespace Fletchling.Business.Services
 {
     public class TwitterClientFactory : ITwitterClientFactory
     {
@@ -34,7 +35,7 @@ namespace Fletchling.Twitter.Services
                 {
                     var user = _userRepo.GetUserAsync(uid).GetAwaiter().GetResult();
                     credentials.AccessToken = user.AccessToken;
-                    credentials.AccessTokenSecret = user.AccessTokenSecret;                    
+                    credentials.AccessTokenSecret = user.AccessTokenSecret;
                 }
                 catch (DataNotFoundException)
                 {

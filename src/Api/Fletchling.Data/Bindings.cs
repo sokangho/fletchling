@@ -8,7 +8,7 @@ namespace Fletchling.Data
 {
     public static class Bindings
     {
-        public static IServiceCollection RegisterDatabase(this IServiceCollection services, IConfiguration config)
+        public static IServiceCollection RegisterDataServices(this IServiceCollection services, IConfiguration config)
         {
             string firebaseAdminSdkPath = AppDomain.CurrentDomain.BaseDirectory + "firebase-adminsdk-fletchling-dev.json";
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", firebaseAdminSdkPath);
