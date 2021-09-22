@@ -132,10 +132,10 @@ namespace Fletchling.Api
             };
             app.UseForwardedHeaders(forwardedHeaderOptions);
 
+            app.UseSerilogRequestLogging();
+
             // Custom exception handling middleware
             app.UseMiddleware<ExceptionMiddleware>();
-
-            app.UseSerilogRequestLogging();
 
             app.UseRouting();
             app.UseCors(options =>

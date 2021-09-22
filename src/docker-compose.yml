@@ -53,7 +53,7 @@ services:
     environment:
       - ACCEPT_EULA=Y
     volumes:
-      - D:\temp\logs\fletchling:/data
+      - ./seq_data:/data
     ports:
       - 8081:80
     networks:

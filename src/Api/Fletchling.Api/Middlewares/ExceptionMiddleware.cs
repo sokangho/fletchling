@@ -1,6 +1,7 @@
 ﻿using Fletchling.Api.Exceptions;
 using Fletchling.Api.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -10,10 +11,12 @@ namespace Fletchling.Api.Middlewares
     public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<ExceptionMiddleware> _logger;
 
-        public ExceptionMiddleware(RequestDelegate next)
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
@@ -24,10 +27,12 @@ namespace Fletchling.Api.Middlewares
             }
             catch (HttpStatusCodeException ex)
             {
+                _logger.LogWarning(ex, ex.Message);
                 await HandleHttpStatusCodeExceptionAsync(context, ex);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 await HandleExceptionAsync(context, ex);
             }
         }
