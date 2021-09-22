@@ -4,23 +4,25 @@
       "commandName": "DockerCompose",
       "composeLaunchServiceName": "fletchling.api",
       "serviceActions": {
-        "fletchling.api": "StartDebugging",
-        "fletchling.web": "StartWithoutDebugging"
+        "reverse-proxy": "StartWithoutDebugging",
+        "api": "StartDebugging",
+        "seq": "StartWithoutDebugging",
+        "web": "StartWithoutDebugging"
       },
       "composeLaunchAction": "LaunchBrowser",
-      "commandVersion": "1.0",
-      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger"
+      "commandVersion": "1.0"
     },
     "Api Only": {
       "commandName": "DockerCompose",
-      "composeLaunchServiceName": "fletchling.api",
+      "composeLaunchServiceName": "api",
       "serviceActions": {
-        "fletchling.api": "StartDebugging",
-        "fletchling.web": "DoNotStart"
+        "reverse-proxy": "DoNotStart",
+        "api": "StartDebugging",
+        "seq": "DoNotStart",
+        "web": "DoNotStart"
       },
-      "composeLaunchAction": "LaunchBrowser",
-      "commandVersion": "1.0",
-      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger"
+      "composeLaunchAction": "None",
+      "commandVersion": "1.0"
     }
   }
 }
