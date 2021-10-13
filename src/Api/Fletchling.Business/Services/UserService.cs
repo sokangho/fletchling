@@ -1,8 +1,9 @@
-﻿using Fletchling.Data.Models;
+﻿using Fletchling.Business.Contracts;
+using Fletchling.Data.Models;
 using Fletchling.Data.Repositories;
 using System.Threading.Tasks;
 
-namespace Fletchling.Business
+namespace Fletchling.Business.Services
 {
     public class UserService : IUserService
     {

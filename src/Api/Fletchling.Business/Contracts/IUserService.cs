@@ -1,7 +1,7 @@
 ﻿using Fletchling.Data.Models;
 using System.Threading.Tasks;
 
-namespace Fletchling.Business
+namespace Fletchling.Business.Contracts
 {
     public interface IUserService
     {
