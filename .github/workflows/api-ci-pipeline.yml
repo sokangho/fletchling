@@ -1,0 +1,29 @@
+name: CI pipeline
+
+on:
+  pull_request:
+    branches:
+      - master
+
+    paths:
+      - src/Api/**
+      - .github/workflows/api-ci-pipeline.yml
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build and run tests
+        shell: bash
+        run: sudo -E docker-compose -f ./docker-compose.yml -f docker-compose-test.yml build api
+
+      - name: Publish test results
+        uses: dorny/test-reporter@v1
+        if: success()
+        with:
+          name: Tests
+          path: src/Api/Fletchling.Api.Tests/TestResults/*.trx
+          reporter: dotnet-trx

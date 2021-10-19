@@ -14,15 +14,15 @@ COPY "Fletchling.Data/" "Fletchling.Data/"
 RUN dotnet restore "Fletchling.Api/Fletchling.Api.csproj"
 
 WORKDIR /src/Fletchling.Api
-RUN dotnet build "Fletchling.Api.csproj" -c Release -o /app/build
+RUN dotnet build "Fletchling.Api.csproj" --no-restore -c Release -o /app/build
 
 FROM build AS test
 WORKDIR /src
 COPY "Fletchling.Api.Tests/" "Fletchling.Api.Tests/"
-RUN dotnet test Fletchling.Api.Tests
+RUN dotnet test Fletchling.Api.Tests --no-build --logger trx
 
 FROM build AS publish
-RUN dotnet publish "Fletchling.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "Fletchling.Api.csproj" --no-build -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
