@@ -18,7 +18,7 @@ jobs:
 
       - name: Build and run tests
         shell: bash
-        run: sudo -E docker-compose -f ./docker-compose.yml -f docker-compose-test.yml build api
+        run: sudo -E docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose-test.yml build api
 
       - name: Publish test results
         uses: dorny/test-reporter@v1
