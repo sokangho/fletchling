@@ -1,0 +1,47 @@
+name: Build and test Api service
+
+on:
+  pull_request:
+    branches:
+      - master
+
+    paths:
+      - src/Api/**
+      - .github/workflows/api-ci-pipeline.yml
+
+jobs:
+  BuildAndRunTests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+
+      - name: Build and run unit tests
+        id: test
+        shell: bash
+        run: |
+          cd src/Api/
+          dotnet restore "Fletchling.sln"
+          cd Fletchling.Api.Tests
+          dotnet build --no-restore
+          dotnet test --no-build --logger trx
+
+      - name: Publish test results
+        uses: dorny/test-reporter@v1
+        if: success() || failure()
+        with:
+          name: Test-Results
+          path: src/Api/Fletchling.Api.Tests/TestResults/*.trx
+          reporter: dotnet-trx
+          fail-on-error: false
+
+      - name: Compose build
+        if: steps.test.outcome == 'success'
+        shell: bash
+        run: docker-compose build api
+        working-directory: ./src

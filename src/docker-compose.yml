@@ -2,34 +2,19 @@ version: '3.4'
 
 services:
   api:
-    image: ${DOCKER_REGISTRY-}fletchling-api
+    image: ${REGISTRY-}fletchling-api-${TAG:-latest}
     build:
       context: ./Api
       dockerfile: ./Fletchling.Api/Dockerfile
-    environment:
-      - ASPNETCORE_URLS=http://+:80
-      - ASPNETCORE_ENVIRONMENT=Production
-    env_file:
-      - ./Api/Fletchling.Api/.env
-    expose:
-      - 80
     networks:
       - fletchling-network
     restart: on-failure
 
   web:
-    image: ${DOCKER_REGISTRY-}fletchling-web
+    image: ${REGISTRY-}fletchling-web
     build:
       context: ./Web/fletchling.web
       dockerfile: Dockerfile
-      target: prod
-    environment:
-      - NODE_ENV=production
-      - PORT=80
-    env_file:
-      - ./Web/fletchling.web/.env
-    expose:
-      - 80
     networks:
       - fletchling-network
     restart: on-failure
@@ -38,14 +23,17 @@ services:
     build:
       context: ./ReverseProxy
       dockerfile: Dockerfile
-    ports:
-      - 80:80
-      - 443:443
     networks:
       - fletchling-network
     depends_on:
       - web
       - api
+
+  seq:
+    image: datalust/seq:2020.1
+    restart: unless-stopped
+    networks:
+      - fletchling-network
 
 networks:
   fletchling-network: {}

@@ -1,5 +1,5 @@
-﻿using Fletchling.Data.Models;
-using Fletchling.Data.Repositories;
+﻿using Fletchling.Business.Contracts;
+using Fletchling.Data.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -9,17 +9,17 @@ namespace Fletchling.Api.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IUserRepository _userRepo;
+        private readonly IUserService _userService;
 
-        public UserController(IUserRepository userRepo)
+        public UserController(IUserService userService)
         {
-            _userRepo = userRepo;
+            _userService = userService;
         }
 
         [HttpPost]
         public async Task<ActionResult> AddUser(User user)
         {
-            await _userRepo.AddUserAsync(user);
+            await _userService.AddUserAsync(user);
             return Ok();
         }
     }

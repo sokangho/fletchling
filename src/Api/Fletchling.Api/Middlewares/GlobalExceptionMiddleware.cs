@@ -1,19 +1,22 @@
-﻿using Fletchling.Api.Exceptions;
-using Fletchling.Api.Models;
+﻿using Fletchling.Api.Models;
+using Fletchling.Api.Exceptions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
 using System.Threading.Tasks;
 
 namespace Fletchling.Api.Middlewares
 {
-    public class ExceptionMiddleware
+    public class GlobalExceptionMiddleware
     {
         private readonly RequestDelegate _next;
+        private readonly ILogger<GlobalExceptionMiddleware> _logger;
 
-        public ExceptionMiddleware(RequestDelegate next)
+        public GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger)
         {
             _next = next;
+            _logger = logger;
         }
 
         public async Task Invoke(HttpContext context)
@@ -22,18 +25,20 @@ namespace Fletchling.Api.Middlewares
             {
                 await _next(context);
             }
-            catch (HttpStatusCodeException ex)
+            catch (BusinessException ex)
             {
+                _logger.LogWarning(ex, ex.Message);
                 await HandleHttpStatusCodeExceptionAsync(context, ex);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 await HandleExceptionAsync(context, ex);
             }
         }
 
         // Handle caught exceptions
-        private Task HandleHttpStatusCodeExceptionAsync(HttpContext context, HttpStatusCodeException ex)
+        private Task HandleHttpStatusCodeExceptionAsync(HttpContext context, BusinessException ex)
         {
             var response = new ErrorResponse
             {

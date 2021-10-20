@@ -1,4 +1,5 @@
 using Fletchling.Api.Authorization;
+using Fletchling.Api.Logging;
 using Fletchling.Api.Middlewares;
 using Fletchling.Api.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -12,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -117,10 +119,16 @@ namespace Fletchling.Api
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {            
-            if (env.IsDevelopment())
+        {
+            // Enable Request buffering here so that Request can be read multiple times
+            app.Use((context, next) =>
             {
-                app.UseDeveloperExceptionPage();
+                context.Request.EnableBuffering();
+                return next();
+            });
+
+            if (env.IsDevelopment())
+            {                
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Fletchling.Api v1"));
             }
@@ -130,9 +138,17 @@ namespace Fletchling.Api
                 ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
             };
             app.UseForwardedHeaders(forwardedHeaderOptions);
+            
+            app.UseSerilogRequestLogging(options =>
+            {
+                options.EnrichDiagnosticContext = async (diagosticContext, httpContext) => 
+                { 
+                    await SeriLogEnrichment.EnrichWithRequestDetails(diagosticContext, httpContext); 
+                };
+            });
 
             // Custom exception handling middleware
-            app.UseMiddleware<ExceptionMiddleware>();
+            app.UseMiddleware<GlobalExceptionMiddleware>();
 
             app.UseRouting();
             app.UseCors(options =>

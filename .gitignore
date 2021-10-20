@@ -289,3 +289,6 @@ src/**/inf.yaml
 
 # certs
 https_certs
+
+# seq data
+seq_data/

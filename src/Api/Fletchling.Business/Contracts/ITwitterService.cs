@@ -1,8 +1,8 @@
-﻿using Fletchling.Twitter.Models;
+﻿using Fletchling.Business.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Fletchling.Twitter.Services
+namespace Fletchling.Business.Contracts
 {
     public interface ITwitterService
     {

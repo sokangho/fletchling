@@ -1,5 +1,5 @@
-﻿using Fletchling.Twitter.Models;
-using Fletchling.Twitter.Services;
+﻿using Fletchling.Business.Contracts;
+using Fletchling.Business.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

@@ -1,5 +1,4 @@
-﻿using Fletchling.Data;
-using Fletchling.Twitter;
+﻿using Fletchling.Business;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,8 +8,7 @@ namespace Fletchling.Api
     {
         public static IServiceCollection RegisterBindings(this IServiceCollection services, IConfiguration config)
         {
-            services.RegisterDatabase(config);
-            services.RegisterTwitterServices(config);
+            services.RegisterBusinessServices(config);            
 
             return services;
         }

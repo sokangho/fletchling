@@ -3,7 +3,7 @@ import assign from 'lodash/assign';
 
 const baseConfig: AxiosRequestConfig = {
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
-  timeout: 10000 // 10 seconds,
+  timeout: 30000 // 30 seconds,
 };
 
 const instance = axios.create(baseConfig);
