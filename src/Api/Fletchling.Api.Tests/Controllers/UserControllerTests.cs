@@ -23,8 +23,5 @@ namespace Fletchling.Api.Tests.Controllers
             // Assert
             userServiceMock.Verify(x => x.AddUserAsync(It.IsAny<User>()), Times.Once);
         }
-
-        //[Fact]
-        //public async Task TestAddUser_ThrowsBusinessException_Returns
     }
 }
