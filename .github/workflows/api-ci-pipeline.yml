@@ -41,7 +41,7 @@ jobs:
           fail-on-error: false
 
       - name: Compose build
-        if: step.test.outcome == 'success'
+        if: steps.test.outcome == 'success'
         shell: bash
         run: docker-compose build api
         working-directory: ./src
