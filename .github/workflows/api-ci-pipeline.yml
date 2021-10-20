@@ -30,17 +30,6 @@ jobs:
           dotnet build --no-restore
           dotnet test --no-build --logger trx
 
-
-      # - name: Build and run tests
-      #   shell: bash
-      #   run: sudo -E docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose-test.yml build api
-
-      # - uses: actions/upload-artifact@v2
-      #   if: success() || failure()
-      #   with:
-      #     name: test-results
-      #     path: src/Api/
-
       - name: Publish test results
         uses: dorny/test-reporter@v1
         if: success()
@@ -48,3 +37,8 @@ jobs:
           name: Tests
           path: src/Api/Fletchling.Api.Tests/TestResults/*.trx
           reporter: dotnet-trx
+
+      - name: Compose build
+        shell: bash
+        run: docker-compose build api
+        working-directory: ./src
