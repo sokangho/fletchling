@@ -1,0 +1,37 @@
+version: '3.4'
+
+services:
+  api:
+    environment:
+      - ASPNETCORE_URLS=http://+:80
+      - ASPNETCORE_ENVIRONMENT=Production
+      - TwitterCredentials__ConsumerKey=${TWITTERCREDENTIALS_CONSUMERKEY}
+      - TwitterCredentials__ConsumerSecret=${TWITTERCREDENTIALS_CONSUMERSECRET}
+      - TwitterCredentials__AccessToken=${TWITTERCREDENTIALS_ACCESSTOKEN}
+      - TwitterCredentials__AccessTokenSecret=${TWITTERCREDENTIALS_ACCESSTOKENSECRET}
+    ports:
+      - 80
+
+  web:
+    build:
+      target: prod
+    environment:
+      - NODE_ENV=production
+      - PORT=80
+    env_file:
+      - ./Web/fletchling.web/.env
+    ports:
+      - 80
+
+  reverse-proxy:
+    ports:
+      - 80:80
+      - 443:443
+
+  seq:
+    environment:
+      - ACCEPT_EULA=Y
+    volumes:
+      - ./seq_data:/data
+    ports:
+      - 8080:80
