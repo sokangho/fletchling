@@ -47,7 +47,6 @@ jobs:
               sha: context.sha
             })
 
-
       # - uses: ./.github/workflows/composite/build-push
       #   with:
       #     service: ${{ env.SERVICE }}
