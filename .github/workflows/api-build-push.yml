@@ -23,14 +23,14 @@ jobs:
         shell: bash
         run: |
           cd src/release_version/
-          echo "RELEASE_VERSION=$( cat api.txt )" >> $GITHUB_ENV
-          echo $RELEASE_VERSION
+          RELEASE_VERSION=$( cat api.txt )
+          echo "TAG_NAME=api-$RELEASE_VERSION" >> $GITHUB_ENV
 
       - name: Check if tag exists
         id: checkTag
         uses: mukunku/tag-exists-action@v1.0.0
         with:
-          tag: ${{ env.RELEASE_VERSION }}
+          tag: ${{ env.TAG_NAME }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -43,7 +43,7 @@ jobs:
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: ${{ format('refs/tags/api-{0}', env.RELEASE_VERSION) }},
+              ref: "refs/tags/api-"$TAG_NAME,
               sha: context.sha
             })
 
