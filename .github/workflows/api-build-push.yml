@@ -47,10 +47,10 @@ jobs:
               sha: context.sha
             })
 
-      # - uses: ./.github/workflows/composite/build-push
-      #   with:
-      #     service: ${{ env.SERVICE }}
-      #     registry_host: ${{ secrets.REGISTRY_HOST }}
-      #     registry_endpoint: ${{ secrets.REGISTRY_ENDPOINT }}
-      #     registry_username: ${{ secrets.REGISTRY_USERNAME }}
-      #     registry_password: ${{ secrets.REGISTRY_PASSWORD }}
+      - uses: ./.github/workflows/composite/build-push
+        with:
+          service: ${{ env.SERVICE }}
+          image_tag: ${{ env.TAG_NAME }}
+          registry_repo: ${{ secrets.DOCKERHUB_REPO }}
+          registry_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          registry_password: ${{ secrets.DOCKERHUB_TOKEN }}
