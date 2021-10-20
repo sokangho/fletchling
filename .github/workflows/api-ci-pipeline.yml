@@ -16,9 +16,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Build and run tests
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0
+
+      - name: Build and run unit tests
         shell: bash
-        run: sudo -E docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose-test.yml build api
+        run: |
+          cd src/Api/
+          dotnet restore "Fletchling.sln"
+          cd Fletchling.Api.Tests
+          dotnet build --no-restore
+          dotnet test --no-build --logger trx
+
+
+      # - name: Build and run tests
+      #   shell: bash
+      #   run: sudo -E docker-compose -f ./src/docker-compose.yml -f ./src/docker-compose-test.yml build api
+
+      # - uses: actions/upload-artifact@v2
+      #   if: success() || failure()
+      #   with:
+      #     name: test-results
+      #     path: src/Api/
 
       - name: Publish test results
         uses: dorny/test-reporter@v1
