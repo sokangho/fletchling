@@ -23,7 +23,8 @@ jobs:
         shell: bash
         run: |
           cd src/release_version/
-          echo "IMAGE_TAG=$( cat api.txt )" >> $GITHUB_ENV
+          IMAGE_TAG=$( cat api.txt )
+          echo $IMAGE_TAG >> $GITHUB_ENV
           echo "GIT_TAG=api-$IMAGE_TAG" >> $GITHUB_ENV
 
       - name: Check if tag exists
@@ -47,7 +48,9 @@ jobs:
               sha: context.sha
             })
 
-      - uses: ./.github/workflows/composite/build-push
+      - name: Build and push image to registry
+        uses: ./.github/workflows/composite/build-push
+        if: ${{ steps.checkTag.outputs.exists == 'false' }}
         with:
           service: ${{ env.SERVICE }}
           image_tag: ${{ env.IMAGE_TAG }}
