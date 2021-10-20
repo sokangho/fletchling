@@ -2,8 +2,8 @@ name: Build and push Api image
 
 on:
   push:
-    tags:
-     - api-v*
+    branches:
+      - master
 
 env:
   SERVICE: api
@@ -11,14 +11,21 @@ env:
 jobs:
   BuildAndPushImage:
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/master' }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Get release tag
-        shell: bash
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}"
+      - name: Create tag
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ github.token }}
+          script: |
+            github.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: "refs/tags/api-0.1.0",
+              sha: context.sha
+            })
 
 
       # - uses: ./.github/workflows/composite/build-push
