@@ -22,7 +22,7 @@ COPY "Fletchling.Api.Tests/" "Fletchling.Api.Tests/"
 RUN dotnet test Fletchling.Api.Tests --no-build --logger trx
 
 FROM build AS publish
-RUN dotnet publish "Fletchling.Api.csproj" -c Release -o /app/publish
+RUN dotnet publish "Fletchling.Api.csproj" --no-restore -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app

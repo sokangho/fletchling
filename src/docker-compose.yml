@@ -2,7 +2,7 @@ version: '3.4'
 
 services:
   api:
-    image: ${REGISTRY-}-api:${TAG:-latest}
+    image: ${REGISTRY/-}fletchling-api:${TAG:-latest}
     build:
       context: ./Api
       dockerfile: ./Fletchling.Api/Dockerfile
@@ -11,7 +11,7 @@ services:
     restart: on-failure
 
   web:
-    image: ${REGISTRY-}-web:${TAG:-latest}
+    image: ${REGISTRY/-}fletchling-web:${TAG:-latest}
     build:
       context: ./Web/fletchling.web
       dockerfile: Dockerfile
