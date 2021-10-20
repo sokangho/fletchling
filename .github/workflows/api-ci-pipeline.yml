@@ -22,6 +22,7 @@ jobs:
           dotnet-version: '5.0.x'
 
       - name: Build and run unit tests
+        id: test
         shell: bash
         run: |
           cd src/Api/
@@ -37,8 +38,10 @@ jobs:
           name: Tests
           path: src/Api/Fletchling.Api.Tests/TestResults/*.trx
           reporter: dotnet-trx
+          fail-on-error: false
 
       - name: Compose build
+        if: step.test.outcome == 'success'
         shell: bash
         run: docker-compose build api
         working-directory: ./src
