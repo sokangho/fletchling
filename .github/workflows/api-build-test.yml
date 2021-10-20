@@ -10,7 +10,7 @@ on:
       - .github/workflows/api-ci-pipeline.yml
 
 jobs:
-  Api-CI:
+  BuildAndRunTests:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
