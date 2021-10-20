@@ -6,7 +6,7 @@ on:
       - master
 
     paths:
-      - src/Api/**
+      - src/release_version/api.txt
       - .github/workflows/api-build-push.yml
 
 env:
@@ -19,6 +19,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Get Api release version
+        shell: bash
+        run: |
+          cd src/release_version/
+          echo "RELEASE_VERSION=$( cat api.txt )" >> $GITHUB_ENV
+
+      - name: Check if tag exists
+        id: checkTag
+        uses: mukunku/tag-exists-action@v1.0.0
+        with:
+          tag: $RELEASE_VERSION
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Create tag
         uses: actions/github-script@v3
         with:
@@ -27,7 +41,7 @@ jobs:
             github.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: "refs/tags/api-0.1.0",
+              ref: ${{ format("refs/tags/api-{0}", env.RELEASE_VERSION) }},
               sha: context.sha
             })
 

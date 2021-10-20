@@ -16,23 +16,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Get release version
-        shell: bash
-        run: |
-          cd src
-          source release_version.txt
-          echo "RELEASE_VERSION=$API" >> $GITHUB_ENV
-
-      - name: Check if tag exists
-        id: checkTag
-        uses: mukunku/tag-exists-action@v1.0.0
-        with:
-          tag: $RELEASE_VERSION
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Setup dotnet
-        if: ${{ steps.checkTag.outputs.exists == 'false' }}
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
