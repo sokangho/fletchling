@@ -21,7 +21,7 @@ namespace Fletchling.Api.Tests.Controllers
             await controller.AddUser(new User());
 
             // Assert
-            userServiceMock.Verify(x => x.AddUserAsync(It.IsAny<User>()), Times.Once);
+            userServiceMock.Verify(x => x.AddUserAsync(It.IsAny<User>()), Times.Never);
         }
 
         //[Fact]
