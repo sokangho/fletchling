@@ -5,6 +5,10 @@ on:
     branches:
       - master
 
+    paths:
+      - src/Api/**
+      - .github/workflows/api-build-push.yml
+
 env:
   SERVICE: api
 
