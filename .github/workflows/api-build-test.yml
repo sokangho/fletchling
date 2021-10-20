@@ -8,6 +8,7 @@ on:
     paths:
       - src/Api/**
       - .github/workflows/api-build-test.yml
+      - src/release_version/api.txt
 
 jobs:
   BuildAndRunTests:
