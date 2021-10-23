@@ -10,7 +10,7 @@ services:
       - fletchling-network
 
   web:
-    image: ${REGISTRY-fletchling}fletchling-web:${TAG:-latest}
+    image: ${REGISTRY-fletchling}-web:${TAG:-latest}
     build:
       context: ./Web/fletchling.web
       dockerfile: Dockerfile
