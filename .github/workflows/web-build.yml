@@ -1,0 +1,23 @@
+name: Build Web service
+
+on:
+  pull_request:
+    branches:
+      - master
+
+    paths:
+      - src/Web/**
+      - .github/workflows/web-build.yml
+      - src/release_version/web.txt
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Compose build
+        shell: bash
+        run: docker-compose build web
+        working-directory: ./src

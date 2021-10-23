@@ -3,8 +3,8 @@ version: '3.4'
 services:
   api:
     environment:
-      - ASPNETCORE_URLS=http://+:80
       - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
       - TwitterCredentials__ConsumerKey=${TWITTERCREDENTIALS_CONSUMERKEY}
       - TwitterCredentials__ConsumerSecret=${TWITTERCREDENTIALS_CONSUMERSECRET}
       - TwitterCredentials__AccessToken=${TWITTERCREDENTIALS_ACCESSTOKEN}

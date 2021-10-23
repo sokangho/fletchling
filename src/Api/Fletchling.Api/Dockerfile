@@ -27,4 +27,12 @@ RUN dotnet publish "Fletchling.Api.csproj" --no-restore -c Release -o /app/publi
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+
+# Create non-root user
+RUN groupadd -g 999 api-group && \
+    useradd -r -u 999 -g api-group api-user && \
+    chgrp -R api-group /app && \
+    chmod -R 550 /app
+USER api-user
+
 ENTRYPOINT ["dotnet", "Fletchling.Api.dll"]

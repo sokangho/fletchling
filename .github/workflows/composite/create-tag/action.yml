@@ -1,0 +1,36 @@
+name: "Create github tag"
+
+inputs:
+  service:
+    description: "Service to build and push"
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Get ${{ inputs.service }} release version
+      shell: bash
+      run: |
+        cd src/release_version/
+        release_file=${{ inputs.service }}.txt
+        IMAGE_TAG=$( cat $release_file )
+        echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
+        echo "GIT_TAG=${{ inputs.service }}-$IMAGE_TAG" >> $GITHUB_ENV
+
+    - name: Check if Github tag exists
+      id: checkTag
+      uses: mukunku/tag-exists-action@v1.0.0
+      with:
+        tag: ${{ env.GIT_TAG }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: test
+      if: failure()
+
+
+    - name: Create Github tag
+      uses: actions/github-script@v3
+      with:
+        github-token: ${{ github.token }}
+        script: |
