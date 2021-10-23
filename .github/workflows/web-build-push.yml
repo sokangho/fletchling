@@ -6,7 +6,7 @@ on:
       - master
 
     paths:
-      - src/release_version/api.txt
+      - src/release_version/web.txt
       - .github/workflows/web-build-push.yml
 
 env:
