@@ -1,13 +1,13 @@
-﻿using Fletchling.Api.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using System.Linq;
 using System.Threading.Tasks;
+using Fletchling.Domain.ApiModels.Requests;
 
 namespace Fletchling.Api.Authorization
 {
-    public class IsOwnerAuthorizationHandler : AuthorizationHandler<IsOwnerRequirement, TimelineRequest>
+    public class IsOwnerAuthorizationHandler : AuthorizationHandler<IsOwnerRequirement, SetTimelineRequest>
     {
-        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, IsOwnerRequirement requirement, TimelineRequest request)
+        protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, IsOwnerRequirement requirement, SetTimelineRequest request)
         {
             if (context.User == null)
             {

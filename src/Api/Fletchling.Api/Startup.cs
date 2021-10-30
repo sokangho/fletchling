@@ -1,7 +1,6 @@
 using Fletchling.Api.Authorization;
 using Fletchling.Api.Logging;
 using Fletchling.Api.Middlewares;
-using Fletchling.Api.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -16,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Net;
 using System.Threading.Tasks;
+using Fletchling.Domain.ApiModels.Responses;
 
 namespace Fletchling.Api
 {
@@ -152,7 +152,7 @@ namespace Fletchling.Api
 
             app.UseRouting();
             app.UseCors(options =>
-                options.WithOrigins(Configuration["WebUrl"])
+                options.WithOrigins(Configuration["WebUrls"].Split(";"))
                     .AllowAnyMethod()
                     .AllowAnyHeader());
             app.UseAuthentication();

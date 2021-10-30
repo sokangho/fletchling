@@ -1,17 +1,17 @@
-﻿using Fletchling.Api.Models;
-using Fletchling.Api.Exceptions;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Logging;
-using System;
+﻿using System;
 using System.Net;
 using System.Threading.Tasks;
+using Fletchling.Application.Exceptions;
+using Fletchling.Domain.ApiModels.Responses;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 
 namespace Fletchling.Api.Middlewares
 {
     public class GlobalExceptionMiddleware
     {
-        private readonly RequestDelegate _next;
         private readonly ILogger<GlobalExceptionMiddleware> _logger;
+        private readonly RequestDelegate _next;
 
         public GlobalExceptionMiddleware(RequestDelegate next, ILogger<GlobalExceptionMiddleware> logger)
         {
@@ -40,7 +40,7 @@ namespace Fletchling.Api.Middlewares
         // Handle caught exceptions
         private Task HandleHttpStatusCodeExceptionAsync(HttpContext context, BusinessException ex)
         {
-            var response = new ErrorResponse
+            ErrorResponse response = new ErrorResponse
             {
                 StatusCode = (int)ex.StatusCode,
                 ErrorMessage = ex.Message
@@ -55,7 +55,7 @@ namespace Fletchling.Api.Middlewares
         // Handle uncaught exception with a default 500 status code and a default error message
         private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
-            var response = new ErrorResponse
+            ErrorResponse response = new ErrorResponse
             {
                 StatusCode = (int)HttpStatusCode.InternalServerError,
                 ErrorMessage = "Internal server error."

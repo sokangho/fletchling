@@ -1,9 +1,9 @@
-﻿using Fletchling.Business.Contracts;
-using Fletchling.Business.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using Fletchling.Application.Interfaces.Services;
+using Fletchling.Domain.ApiModels;
 
 namespace Fletchling.Api.Controllers
 {

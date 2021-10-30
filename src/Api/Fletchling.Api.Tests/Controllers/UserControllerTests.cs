@@ -1,8 +1,8 @@
 ﻿using Fletchling.Api.Controllers;
-using Fletchling.Business.Contracts;
-using Fletchling.Data.Models;
 using Moq;
 using System.Threading.Tasks;
+using Fletchling.Application.Interfaces.Services;
+using Fletchling.Domain.ApiModels.Requests;
 using Xunit;
 
 namespace Fletchling.Api.Tests.Controllers
@@ -14,14 +14,14 @@ namespace Fletchling.Api.Tests.Controllers
         {
             // Arrange
             var userServiceMock = new Mock<IUserService>();
-            userServiceMock.Setup(x => x.AddUserAsync(It.IsAny<User>())).Returns(Task.CompletedTask);
+            userServiceMock.Setup(x => x.AddUserAsync(It.IsAny<AddUserRequest>())).Returns(Task.CompletedTask);
             var controller = new UserController(userServiceMock.Object);
 
             // Act
-            await controller.AddUser(new User());
+            await controller.AddUser(new AddUserRequest());
 
             // Assert
-            userServiceMock.Verify(x => x.AddUserAsync(It.IsAny<User>()), Times.Once);
+            userServiceMock.Verify(x => x.AddUserAsync(It.IsAny<AddUserRequest>()), Times.Once);
         }
     }
 }
