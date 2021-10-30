@@ -22,7 +22,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fletchling.Business\Fletchling.Business.csproj" />
+    <ProjectReference Include="..\Fletchling.Application\Fletchling.Application.csproj" />
+    <ProjectReference Include="..\Fletchling.Data\Fletchling.Data.csproj" />
+    <ProjectReference Include="..\Fletchling.Domain\Fletchling.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>

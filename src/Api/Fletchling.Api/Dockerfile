@@ -8,8 +8,9 @@ WORKDIR /src
 
 COPY "Fletchling.sln" "Fletchling.sln"
 COPY "Fletchling.Api/" "Fletchling.Api/"
-COPY "Fletchling.Business/" "Fletchling.Business/"
 COPY "Fletchling.Data/" "Fletchling.Data/"
+COPY "Fletchling.Application/" "Fletchling.Application/"
+COPY "Fletchling.Domain/" "Fletchling.Domain/"
 
 RUN dotnet restore "Fletchling.Api/Fletchling.Api.csproj"
 

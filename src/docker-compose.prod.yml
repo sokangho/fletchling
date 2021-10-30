@@ -9,7 +9,7 @@ services:
       - TwitterCredentials__ConsumerSecret=${TWITTERCREDENTIALS_CONSUMERSECRET}
       - TwitterCredentials__AccessToken=${TWITTERCREDENTIALS_ACCESSTOKEN}
       - TwitterCredentials__AccessTokenSecret=${TWITTERCREDENTIALS_ACCESSTOKENSECRET}
-    ports:
+    expose:
       - 80
 
   web:
@@ -20,7 +20,7 @@ services:
       - PORT=80
     env_file:
       - ./Web/fletchling.web/.env
-    ports:
+    expose:
       - 80
 
   reverse-proxy:

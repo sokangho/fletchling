@@ -1,7 +1,7 @@
-﻿using Fletchling.Business.Contracts;
-using Fletchling.Data.Models;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Fletchling.Application.Interfaces.Services;
+using Fletchling.Domain.ApiModels.Requests;
 
 namespace Fletchling.Api.Controllers
 {
@@ -17,7 +17,7 @@ namespace Fletchling.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddUser(User user)
+        public async Task<ActionResult> AddUser(AddUserRequest user)
         {
             await _userService.AddUserAsync(user);
             return Ok();

@@ -1,5 +1,6 @@
 # Install npm dependencies
 FROM node:alpine AS base
+ENV NODE_OPTIONS=--openssl-legacy-provider
 WORKDIR /app
 COPY package.json .
 COPY package-lock.json .
@@ -10,10 +11,9 @@ FROM base AS dev
 CMD ["npm", "run", "dev-docker"]
 
 # Rebuild the source code only when needed
-FROM node:alpine AS build
+FROM base AS build
 WORKDIR /app
 COPY . .
-COPY --from=base /app/node_modules ./node_modules
 RUN npm run build
 
 # Production image

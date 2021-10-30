@@ -1,14 +1,13 @@
-﻿using Fletchling.Api.Exceptions;
-using Fletchling.Api.Models;
-using Fletchling.Business.Contracts;
-using Fletchling.Data.Exceptions;
-using Fletchling.Data.Models;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Fletchling.Application.Exceptions;
+using Fletchling.Application.Interfaces.Services;
+using Fletchling.Domain.ApiModels.Requests;
+using Fletchling.Domain.Entities;
 
 namespace Fletchling.Api.Controllers
 {
@@ -36,7 +35,7 @@ namespace Fletchling.Api.Controllers
         }
 
         [HttpPatch]
-        public async Task<ActionResult> SetTimelinesInGroup([FromBody] TimelineRequest request)
+        public async Task<ActionResult> SetTimelinesInGroup([FromBody] SetTimelineRequest request)
         {
             var authResult = await _authService.AuthorizeAsync(User, request, "OwnerPolicy");
 

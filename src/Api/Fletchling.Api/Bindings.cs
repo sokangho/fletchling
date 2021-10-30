@@ -1,4 +1,5 @@
-﻿using Fletchling.Business;
+﻿using Fletchling.Application;
+using Fletchling.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,7 +9,8 @@ namespace Fletchling.Api
     {
         public static IServiceCollection RegisterBindings(this IServiceCollection services, IConfiguration config)
         {
-            services.RegisterBusinessServices(config);            
+            services.AddApplicationServices(config);
+            services.AddDataServices(config);
 
             return services;
         }
