@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Fletchling.Api\Fletchling.Api.csproj" />
+    <ProjectReference Include="..\..\src\Api\Fletchling.Api\Fletchling.Api.csproj" />
   </ItemGroup>
 
 </Project>
