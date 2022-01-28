@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Fletchling.Application.Exceptions;
 using Fletchling.Application.Interfaces.Repositories;
 using Fletchling.Application.Interfaces.Services;
@@ -23,11 +24,16 @@ namespace Fletchling.Application.Services
 
         public TwitterClient Create()
         {
+            if (_contextAccessor?.HttpContext == null)
+            {
+                return null;
+            }
+            
             var userContext = _contextAccessor.HttpContext.User;
             var credentials = new TwitterCredentials(_credentials);
 
             // Replace with authenticated user's Twitter credentials
-            if (userContext.Identity.IsAuthenticated)
+            if (userContext.Identity is { IsAuthenticated: true })
             {
                 var uid = userContext.Claims.Where(x => x.Type == "user_id").Select(x => x.Value).FirstOrDefault();
 
