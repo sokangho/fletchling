@@ -4,6 +4,7 @@ namespace Fletchling.Api.Authorization
 {
     public class IsOwnerRequirement : IAuthorizationRequirement
     {
-        public IsOwnerRequirement() { }
+        public IsOwnerRequirement()
+        { }
     }
 }

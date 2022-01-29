@@ -13,8 +13,7 @@ namespace Fletchling.Data
         {
             string firebaseAdminSdkPath = AppDomain.CurrentDomain.BaseDirectory + "firebase-adminsdk-fletchling-dev.json";
             Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", firebaseAdminSdkPath);
-            services.AddSingleton<FirestoreDb>(f => FirestoreDb.Create(config["Firebase:ProjectId"]));
-            Console.Write(config["Firebase:ProjectId"]);
+            services.AddSingleton(_ => FirestoreDb.Create(config["Firebase:ProjectId"]));
 
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<ITimelineRepository, TimelineRepository>();
