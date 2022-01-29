@@ -6,7 +6,7 @@ namespace Fletchling.Application.Interfaces.Services
 {
     public interface ITimelineService
     {
-        Task<TimelineGroup> GetTimelinesByGroupAsync(string uid, string timelineGroupName);
+        Task<TimelineGroup> GetTimelineGroupByNameAsync(string uid, string timelineGroupName);
         Task SetTimelinesInGroupAsync(string uid, List<string> timelines, string groupName = "All");
     }
 }

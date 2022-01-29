@@ -4,31 +4,39 @@ using Fletchling.Application.Exceptions;
 using Fletchling.Application.Interfaces.Repositories;
 using Fletchling.Application.Interfaces.Services;
 using Fletchling.Domain.Entities;
+using Microsoft.Extensions.Logging;
 
 namespace Fletchling.Application.Services
 {
     public class TimelineService : ITimelineService
     {
         private readonly ITimelineRepository _timelineRepo;
+        private readonly ILogger<TimelineService> _logger;
 
-        public TimelineService(ITimelineRepository timelineRepo)
+        public TimelineService(ITimelineRepository timelineRepo, ILogger<TimelineService> logger)
         {
             _timelineRepo = timelineRepo;
+            _logger = logger;
         }
 
-        public async Task<TimelineGroup> GetTimelinesByGroupAsync(string uid, string timelineGroupName)
+        public async Task<TimelineGroup> GetTimelineGroupByNameAsync(string uid, string timelineGroupName)
         {
-            var timelines = await _timelineRepo.GetTimelineGroupByNameAsync(uid, timelineGroupName);
-
-            if (timelines == null)
-                throw new DataNotFoundException($"Timeline group with name: '{timelineGroupName}' for uid: '{uid}' does not exist.");
-
-            return timelines;
+            var timelineGroup = await _timelineRepo.GetTimelineGroupByNameAsync(uid, timelineGroupName);
+            return timelineGroup;
         }
 
         public async Task SetTimelinesInGroupAsync(string uid, List<string> timelines, string groupName = "All")
         {
-            await _timelineRepo.SetTimelinesInGroupAsync(uid, timelines, groupName);
+            var timelineGroup = await _timelineRepo.GetTimelineGroupByNameAsync(uid, groupName);
+
+            if (timelineGroup == null)
+            {
+                _logger.LogWarning($"Timeline group with name: '{groupName}' for uid: '{uid}' does not exist.");
+                throw new DataNotFoundException(
+                    $"Timeline group with name: '{groupName}' does not exist.");
+            }
+            
+            await _timelineRepo.SetTimelinesInGroupAsync(timelineGroup, timelines);
         }
     }
 }
