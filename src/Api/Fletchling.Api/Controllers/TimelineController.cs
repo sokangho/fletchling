@@ -50,6 +50,7 @@ namespace Fletchling.Api.Controllers
             }
             catch (DataNotFoundException ex)
             {
+                // throw BusinessException so that it gets handled by GlobalExceptionMiddleware
                 throw new BusinessException(HttpStatusCode.NotFound, ex.Message); 
             }
             

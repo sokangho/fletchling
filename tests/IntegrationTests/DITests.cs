@@ -1,8 +1,6 @@
-using System;
 using Fletchling.Application.Interfaces.Repositories;
 using Fletchling.Application.Interfaces.Services;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Xunit;
 using Program = Fletchling.Api.Program;
 
