@@ -35,7 +35,7 @@ namespace Fletchling.Application.Services
                 throw new DataNotFoundException(
                     $"Timeline group with name: '{groupName}' does not exist.");
             }
-            
+
             await _timelineRepo.SetTimelinesInGroupAsync(timelineGroup, timelines);
         }
     }

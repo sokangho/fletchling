@@ -1,8 +1,9 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Fletchling.Application.Exceptions;
 using Fletchling.Application.Interfaces.Repositories;
 using Fletchling.Application.Interfaces.Services;
+using Fletchling.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using Tweetinvi;
 using Tweetinvi.Models;
@@ -15,7 +16,8 @@ namespace Fletchling.Application.Services
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IUserRepository _userRepo;
 
-        public TwitterClientFactory(TwitterCredentials credentials, IHttpContextAccessor contextAccessor, IUserRepository userRepo)
+        public TwitterClientFactory(TwitterCredentials credentials, IHttpContextAccessor contextAccessor,
+            IUserRepository userRepo)
         {
             _credentials = credentials;
             _contextAccessor = contextAccessor;
@@ -28,18 +30,21 @@ namespace Fletchling.Application.Services
             {
                 return null;
             }
-            
+
             var userContext = _contextAccessor.HttpContext.User;
             var credentials = new TwitterCredentials(_credentials);
 
             // Replace with authenticated user's Twitter credentials
             if (userContext.Identity is { IsAuthenticated: true })
             {
-                var uid = userContext.Claims.Where(x => x.Type == "user_id").Select(x => x.Value).FirstOrDefault();
+                var uid = userContext.Claims.Where(x => x.Type == "user_id")
+                                     .Select(x => x.Value)
+                                     .FirstOrDefault();
 
                 try
                 {
-                    var user = _userRepo.GetUserAsync(uid).GetAwaiter().GetResult();
+                    var task = Task.Run<User>(async () => await _userRepo.GetUserAsync(uid));
+                    var user = task.Result;
                     credentials.AccessToken = user.AccessToken;
                     credentials.AccessTokenSecret = user.AccessTokenSecret;
                 }
