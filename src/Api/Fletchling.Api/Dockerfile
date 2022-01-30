@@ -6,7 +6,7 @@ WORKDIR /app
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
 
-COPY "Fletchling.sln" "Fletchling.sln"
+COPY "Fletchling.Api.sln" "Fletchling.Api.sln"
 COPY "Fletchling.Api/" "Fletchling.Api/"
 COPY "Fletchling.Data/" "Fletchling.Data/"
 COPY "Fletchling.Application/" "Fletchling.Application/"
