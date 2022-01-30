@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Fletchling.Application.Exceptions;
 using Fletchling.Domain.Entities;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -61,6 +62,7 @@ namespace UnitTests.Fletchling.Application.Services
 
             // Assert
             var exception = await Assert.ThrowsAsync<DataNotFoundException>(Act);
+            _timelineServiceMock.Logger.VerifyLogging(LogLevel.Warning);
             Assert.Equal($"Timeline group with name: '{groupName}' does not exist.", exception.Message);
             _timelineServiceMock.TimelineRepoMock.Verify();
         }
