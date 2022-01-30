@@ -26,9 +26,10 @@ jobs:
         id: test
         shell: bash
         run: |
-          cd src/Api/
-          dotnet restore "Fletchling.sln"
-          cd Fletchling.Api.Tests
+          cd /src/Api/
+          dotnet restore "Fletchling.Api.sln"
+
+          cd /tests/UnitTests
           dotnet build --no-restore
           dotnet test --no-build --logger trx
 
@@ -37,7 +38,7 @@ jobs:
         if: success() || failure()
         with:
           name: Test-Results
-          path: src/Api/Fletchling.Api.Tests/TestResults/*.trx
+          path: tests/UnitTests/TestResults/*.trx
           reporter: dotnet-trx
           fail-on-error: false
 
