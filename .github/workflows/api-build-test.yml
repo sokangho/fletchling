@@ -22,14 +22,17 @@ jobs:
         with:
           dotnet-version: '5.0.x'
 
+      - name: Restore Api solution
+        shell: bash
+        working-directory: src/Api
+        run: |
+          dotnet restore "Fletchling.Api.sln"
+
       - name: Build and run unit tests
         id: test
         shell: bash
+        working-directory: tests/UnitTests
         run: |
-          cd src/Api/
-          dotnet restore "Fletchling.Api.sln"
-
-          cd tests/UnitTests
           dotnet build --no-restore
           dotnet test --no-build --logger trx
 
