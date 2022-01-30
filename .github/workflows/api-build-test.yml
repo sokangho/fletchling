@@ -26,10 +26,10 @@ jobs:
         id: test
         shell: bash
         run: |
-          cd /src/Api/
+          cd src/Api/
           dotnet restore "Fletchling.Api.sln"
 
-          cd /tests/UnitTests
+          cd tests/UnitTests
           dotnet build --no-restore
           dotnet test --no-build --logger trx
 
