@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Fletchling.Application.Exceptions;
 using Fletchling.Application.Interfaces.Repositories;
 using Fletchling.Domain.Entities;
 using Google.Cloud.Firestore;
