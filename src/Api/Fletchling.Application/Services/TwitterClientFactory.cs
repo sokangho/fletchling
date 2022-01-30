@@ -1,8 +1,11 @@
-﻿using System.Linq;
-using Fletchling.Application.Exceptions;
+﻿using System;
+using System.Linq;
+using System.Threading.Tasks;
 using Fletchling.Application.Interfaces.Repositories;
 using Fletchling.Application.Interfaces.Services;
+using Fletchling.Domain.Entities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using Tweetinvi;
 using Tweetinvi.Models;
 
@@ -13,33 +16,52 @@ namespace Fletchling.Application.Services
         private readonly TwitterCredentials _credentials;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IUserRepository _userRepo;
+        private readonly ILogger<TwitterClientFactory> _logger;
 
-        public TwitterClientFactory(TwitterCredentials credentials, IHttpContextAccessor contextAccessor, IUserRepository userRepo)
+        public TwitterClientFactory(TwitterCredentials credentials, IHttpContextAccessor contextAccessor,
+            IUserRepository userRepo, ILogger<TwitterClientFactory> logger)
         {
             _credentials = credentials;
             _contextAccessor = contextAccessor;
             _userRepo = userRepo;
+            _logger = logger;
         }
 
         public TwitterClient Create()
         {
-            var userContext = _contextAccessor.HttpContext.User;
+            // Default Twitter credentials
             var credentials = new TwitterCredentials(_credentials);
 
-            // Replace with authenticated user's Twitter credentials
-            if (userContext.Identity.IsAuthenticated)
+            if (_contextAccessor?.HttpContext == null)
             {
-                var uid = userContext.Claims.Where(x => x.Type == "user_id").Select(x => x.Value).FirstOrDefault();
+                // Use default twitter credentials
+                return new TwitterClient(credentials);
+            }
+
+            var userContext = _contextAccessor.HttpContext.User;
+
+            // Replace with authenticated user's Twitter credentials
+            if (userContext.Identity is { IsAuthenticated: true })
+            {
+                var uid = userContext.Claims.Where(x => x.Type == "user_id")
+                                     .Select(x => x.Value)
+                                     .FirstOrDefault();
 
                 try
                 {
-                    var user = _userRepo.GetUserAsync(uid).GetAwaiter().GetResult();
-                    credentials.AccessToken = user.AccessToken;
-                    credentials.AccessTokenSecret = user.AccessTokenSecret;
+                    var task = Task.Run<User>(async () => await _userRepo.GetUserAsync(uid));
+                    var user = task.Result;
+
+                    if (user != null)
+                    {
+                        credentials.AccessToken = user.AccessToken;
+                        credentials.AccessTokenSecret = user.AccessTokenSecret;
+                    }
                 }
-                catch (DataNotFoundException)
+                catch (Exception ex)
                 {
-                    // swallow user not found exception and use the default twitter credential
+                    // swallow all exceptions and use the default twitter credentials
+                    _logger.LogError(ex, "Error while getting authenticated user's Twitter credentials.");
                 }
             }
 

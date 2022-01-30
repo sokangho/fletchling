@@ -25,8 +25,8 @@ services:
 
   reverse-proxy:
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
 
   seq:
     environment:
@@ -34,4 +34,4 @@ services:
     volumes:
       - ./seq_data:/data
     ports:
-      - 8080:80
+      - "8080:80"

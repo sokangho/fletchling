@@ -28,7 +28,7 @@ namespace Fletchling.Api.Middlewares
             catch (BusinessException ex)
             {
                 _logger.LogWarning(ex, ex.Message);
-                await HandleHttpStatusCodeExceptionAsync(context, ex);
+                await HandleBusinessExceptionAsync(context, ex);
             }
             catch (Exception ex)
             {
@@ -38,16 +38,15 @@ namespace Fletchling.Api.Middlewares
         }
 
         // Handle caught exceptions
-        private Task HandleHttpStatusCodeExceptionAsync(HttpContext context, BusinessException ex)
+        private Task HandleBusinessExceptionAsync(HttpContext context, BusinessException ex)
         {
-            ErrorResponse response = new ErrorResponse
+            var response = new ErrorResponse
             {
                 StatusCode = (int)ex.StatusCode,
                 ErrorMessage = ex.Message
             };
 
             context.Response.StatusCode = response.StatusCode;
-            context.Response.ContentType = ex.ContentType;
 
             return context.Response.WriteAsJsonAsync(response);
         }
@@ -55,14 +54,13 @@ namespace Fletchling.Api.Middlewares
         // Handle uncaught exception with a default 500 status code and a default error message
         private Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
-            ErrorResponse response = new ErrorResponse
+            var response = new ErrorResponse
             {
                 StatusCode = (int)HttpStatusCode.InternalServerError,
                 ErrorMessage = "Internal server error."
             };
 
             context.Response.StatusCode = response.StatusCode;
-            context.Response.ContentType = "application/json";
 
             return context.Response.WriteAsJsonAsync(response);
         }

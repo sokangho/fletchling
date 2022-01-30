@@ -26,11 +26,21 @@ namespace Fletchling.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<TimelineGroup>> GetTimelinesByGroup([FromQuery, Required] string timelineGroupName)
+        public async Task<ActionResult<TimelineGroup>> GetTimelinesByGroup(
+            [FromQuery, Required] string timelineGroupName)
         {
-            var uid = User.Claims.Where(x => x.Type == "user_id").Select(x => x.Value).FirstOrDefault();
+            var uid = User.Claims.Where(x => x.Type == "user_id")
+                          .Select(x => x.Value)
+                          .FirstOrDefault();
 
-            var result = await _timelineService.GetTimelinesByGroupAsync(uid, timelineGroupName);
+            var result = await _timelineService.GetTimelineGroupByNameAsync(uid, timelineGroupName);
+
+            if (result == null)
+            {
+                throw new BusinessException(HttpStatusCode.NotFound, 
+                    $"Timeline group with name: '{timelineGroupName}' does not exist.");
+            }
+
             return Ok(result);
         }
 
@@ -50,9 +60,10 @@ namespace Fletchling.Api.Controllers
             }
             catch (DataNotFoundException ex)
             {
-                throw new BusinessException(HttpStatusCode.NotFound, ex.Message); 
+                // throw BusinessException so that it gets handled by GlobalExceptionMiddleware
+                throw new BusinessException(HttpStatusCode.NotFound, ex.Message);
             }
-            
+
             return Ok();
         }
     }

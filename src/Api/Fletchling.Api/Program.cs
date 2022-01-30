@@ -34,7 +34,7 @@ namespace Fletchling.Api
             
         }
 
-        public static IHostBuilder CreateHostBuilder(string[] args)
+        public static IHostBuilder CreateHostBuilder(params string[] args)
         {
             return Host.CreateDefaultBuilder(args)
                 .UseSerilog()

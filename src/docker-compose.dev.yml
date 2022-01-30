@@ -10,7 +10,7 @@ services:
       - TwitterCredentials__AccessToken=${TWITTERCREDENTIALS_ACCESSTOKEN}
       - TwitterCredentials__AccessTokenSecret=${TWITTERCREDENTIALS_ACCESSTOKENSECRET}
     ports:
-      - 6001:80
+      - "6001:80"
     volumes:
       - ~/.aspnet/https:/root/.aspnet/https:ro
       - ~/.microsoft/usersecrets:/root/.microsoft/usersecrets:ro
@@ -24,7 +24,7 @@ services:
     env_file:
       - ./Web/fletchling.web/.env
     ports:
-      - 6002:80
+      - "6002:80"
     volumes:
       - ./Web/fletchling.web:/app
       - /app/node_modules
@@ -32,8 +32,8 @@ services:
 
   reverse-proxy:
     ports:
-      - 80:80
-      - 443:443
+      - "80:80"
+      - "443:443"
 
   seq:
     environment:
@@ -41,4 +41,4 @@ services:
     volumes:
       - ./seq_data:/data
     ports:
-      - 8080:80
+      - "8080:80"
