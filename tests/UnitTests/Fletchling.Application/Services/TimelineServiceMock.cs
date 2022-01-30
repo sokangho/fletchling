@@ -8,10 +8,10 @@ namespace UnitTests.Fletchling.Application.Services
 {
     public class TimelineServiceMock
     {
-        internal Mock<ITimelineRepository> TimelineRepoMock;
-        internal Mock<ILogger<TimelineService>> Logger;
-        
-        public TimelineService CreateServiceMock()
+        internal Mock<ITimelineRepository> TimelineRepoMock { get; private set; }
+        internal Mock<ILogger<TimelineService>> Logger { get; private set; }
+
+        internal TimelineService CreateServiceMock()
         {
             TimelineRepoMock = new Mock<ITimelineRepository>();
             Logger = new Mock<ILogger<TimelineService>>();

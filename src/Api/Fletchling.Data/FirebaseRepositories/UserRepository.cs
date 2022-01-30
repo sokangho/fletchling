@@ -42,12 +42,7 @@ namespace Fletchling.Data.FirebaseRepositories
             DocumentReference docRef = _firestoreDb.Collection(FirestoreConstants.UsersCollection).Document(uid);
             DocumentSnapshot snapshot = await docRef.GetSnapshotAsync();
 
-            if (snapshot.Exists)
-            {
-                return snapshot.ConvertTo<User>();
-            }
-            
-            throw new DataNotFoundException($"User with uid: {uid} not found.");
+            return snapshot.Exists ? snapshot.ConvertTo<User>() : null;
         }
     }
 }
