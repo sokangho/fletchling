@@ -1,4 +1,5 @@
 module.exports = {
+  swcMinify: true, // use swc to minify javascript
   images: {
     domains: ['abs.twimg.com', 'pbs.twimg.com']
   },
