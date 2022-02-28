@@ -1,13 +1,14 @@
 import 'tailwindcss/tailwind.css';
 
 import type { AppProps } from 'next/app';
+import { Provider } from 'next-auth/client';
 
-import GlobalStateProvider from '@/components/Context/GlobalStateProvider';
 import PageLoading from '@/components/PageLoading';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <GlobalStateProvider>
+    <Provider session={session}>
+      {/* <GlobalStateProvider> */}
       <>
         <PageLoading />
         <Component {...pageProps} />
@@ -17,7 +18,8 @@ function MyApp({ Component, pageProps }: AppProps) {
           }
         `}</style>
       </>
-    </GlobalStateProvider>
+      {/* </GlobalStateProvider> */}
+    </Provider>
   );
 }
 

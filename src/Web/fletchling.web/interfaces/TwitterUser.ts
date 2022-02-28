@@ -1,5 +1,5 @@
 interface TwitterUser {
-  id: bigint;
+  id: string;
   username: string;
   displayName: string;
   verified: boolean;
