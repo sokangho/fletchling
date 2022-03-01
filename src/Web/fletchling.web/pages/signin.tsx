@@ -10,12 +10,16 @@ const SignInPage = () => {
   const isSignedIn = !!session?.twitterUser;
   const router = useRouter();
 
-  // If session has been fetched and user is signed in, redirect user to the last page they were on
   if (!loading && isSignedIn) {
     const redirect = getRedirect();
+
     if (redirect) {
+      // Redirect user to the last page they were on
       router.push(redirect);
       clearRedirect();
+    } else {
+      // If no redirect url found, redirect to home page
+      router.push('/');
     }
   }
 
