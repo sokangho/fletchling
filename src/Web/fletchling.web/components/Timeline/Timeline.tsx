@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { Timeline as TimelineWidget } from 'react-twitter-widgets';
 
 import HeartButton from '@/components/Buttons/HeartButton';
-import TimelineContext from '@/components/Context/TimelineContext';
+import { TimelineContext } from '@/components/Context/TimelineContext';
 
 interface Props {
   username: string;

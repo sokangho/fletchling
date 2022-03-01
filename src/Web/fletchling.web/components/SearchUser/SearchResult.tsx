@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useContext } from 'react';
 
 import HeartButton from '@/components/Buttons/HeartButton';
-import TimelineContext from '@/components/Context/TimelineContext';
+import { TimelineContext } from '@/components/Context/TimelineContext';
 import VerifiedBadge from '@/components/TwitterVerifiedBadge';
 import TwitterUser from '@/interfaces/TwitterUser';
 

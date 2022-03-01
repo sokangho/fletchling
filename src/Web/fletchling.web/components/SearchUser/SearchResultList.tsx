@@ -1,7 +1,6 @@
 import { ReactChild, ReactChildren, useContext } from 'react';
 import ClipLoader from 'react-spinners/ClipLoader';
 
-import GlobalStateContext from '@/components/Context/GlobalStateContext';
 import SearchResult from '@/components/SearchUser/SearchResult';
 import TwitterUser from '@/interfaces/TwitterUser';
 import useFetch from '@/lib/useFetch';
@@ -25,14 +24,14 @@ const WrappingDiv = ({ children }: WrappingDivProps) => {
 };
 
 const SearchResultList = ({ username }: Props) => {
-  const {
-    globalState: { currentUser }
-  } = useContext(GlobalStateContext);
-  const token = currentUser?.token;
+  // const {
+  //   globalState: { currentUser }
+  // } = useContext(GlobalStateContext);
+  // const token = currentUser?.token;
 
   const { data, error, loading } = useFetch<TwitterUser[]>(
     `/twitter/user/search?username=${username}`,
-    token
+    'token'
   );
 
   if (error) return <WrappingDiv>failed to load</WrappingDiv>;

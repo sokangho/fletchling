@@ -1,26 +1,38 @@
 import 'tailwindcss/tailwind.css';
 
+import { NextComponentType, NextPageContext } from 'next';
 import type { AppProps } from 'next/app';
 import { Provider } from 'next-auth/client';
 
-import PageLoading from '@/components/PageLoading';
+import AuthGuard from '@/components/Auth/AuthGuard';
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+type AppAuthProps = AppProps & {
+  // eslint-disable-next-line
+  Component: NextComponentType<NextPageContext, any, {}> & {
+    requireAuth?: boolean;
+  };
+};
+
+function MyApp({ Component, pageProps }: AppAuthProps) {
   return (
-    <Provider session={session}>
-      {/* <GlobalStateProvider> */}
-      <>
-        <PageLoading />
+    <Provider session={pageProps.session}>
+      {Component.requireAuth ? (
+        <AuthGuard>
+          <Component {...pageProps} />
+        </AuthGuard>
+      ) : (
         <Component {...pageProps} />
-        <style jsx global>{`
-          body {
-            background-color: #1a1a1b;
-          }
-        `}</style>
-      </>
-      {/* </GlobalStateProvider> */}
+      )}
     </Provider>
   );
 }
 
 export default MyApp;
+
+{
+  /* <style jsx global>{`
+body {
+  background-color: #1a1a1b;
+}
+`}</style> */
+}

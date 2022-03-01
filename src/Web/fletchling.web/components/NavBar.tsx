@@ -1,6 +1,6 @@
-import { signOut, useSession } from 'next-auth/client';
+import { useSession } from 'next-auth/client';
 
-import TwitterAuthButton from '@/components/Buttons/TwitterAuthButton';
+import TwitterSignInButton from '@/components/Buttons/TwitterSignInButton';
 import Logo from '@/components/Logo';
 import Search from '@/components/SearchUser/Search';
 import TwitterUser from '@/interfaces/TwitterUser';
@@ -15,7 +15,6 @@ const NavBar = () => {
       <Logo />
       <Search />
       {session && <UserProfileMenu user={session.twitterUser as TwitterUser} />}
-      {!session && <TwitterAuthButton />}
     </div>
   );
 };
