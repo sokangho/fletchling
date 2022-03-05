@@ -1,3 +1,4 @@
+using System;
 using Fletchling.Api.Authorization;
 using Fletchling.Api.Logging;
 using Fletchling.Api.Middlewares;
@@ -14,7 +15,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
+using Fletchling.Api.Auth;
 using Fletchling.Domain.ApiModels.Responses;
 
 namespace Fletchling.Api
@@ -64,48 +67,8 @@ namespace Fletchling.Api
             });
                         
             // Add and configure JWT authentication
-            var firebaseProjectId = Configuration["Firebase:ProjectId"];
-            services
-                .AddAuthentication(options =>
-                {
-                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                })
-                .AddJwtBearer(options =>
-                {
-                    options.IncludeErrorDetails = true;
-                    options.Authority = $"https://securetoken.google.com/{firebaseProjectId}";
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = $"https://securetoken.google.com/{firebaseProjectId}",
-                        ValidateAudience = true,
-                        ValidAudience = firebaseProjectId,
-                        ValidateLifetime = true
-                    };
-                    // Add custom error message on authentication fails
-                    options.Events = new JwtBearerEvents
-                    {
-                        OnChallenge = context =>
-                        {
-                            var res = new ErrorResponse
-                            {
-                                StatusCode = (int)HttpStatusCode.Unauthorized,
-                                ErrorMessage = "JWT token is missing or invalid."
-                            };
-
-                            // Add response body for 401 error
-                            context.Response.OnStarting(async () =>
-                            {
-                                await context.Response.WriteAsJsonAsync(res);
-                            });
-
-                            return Task.CompletedTask;
-                        }
-                    };
-                });
-
+            services.AddAndConfigureAuthentication(Configuration);
+            
             // Add and configure authorization
             services.AddSingleton<IAuthorizationHandler, IsOwnerAuthorizationHandler>();
             services.AddAuthorization(options =>
@@ -141,10 +104,12 @@ namespace Fletchling.Api
             
             app.UseSerilogRequestLogging(options =>
             {
-                options.EnrichDiagnosticContext = async (diagosticContext, httpContext) => 
-                { 
-                    await SeriLogEnrichment.EnrichWithRequestDetails(diagosticContext, httpContext); 
-                };
+                async void OptionsEnrichDiagnosticContext(IDiagnosticContext diagosticContext, HttpContext httpContext)
+                {
+                    await SeriLogEnrichment.EnrichWithRequestDetails(diagosticContext, httpContext);
+                }
+
+                options.EnrichDiagnosticContext = OptionsEnrichDiagnosticContext;
             });
 
             // Custom exception handling middleware

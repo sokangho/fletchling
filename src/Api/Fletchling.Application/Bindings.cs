@@ -1,4 +1,5 @@
-﻿using Fletchling.Application.Interfaces.Services;
+﻿using Fletchling.Application.Config;
+using Fletchling.Application.Interfaces.Services;
 using Fletchling.Application.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,14 +16,17 @@ namespace Fletchling.Application
             config.GetSection("TwitterCredentials").Bind(twitterCredentials);
             services.AddSingleton(twitterCredentials);
 
+            services.Configure<JwtConfig>(options => config.GetSection(nameof(JwtConfig)).Bind(options));
+
             services.AddHttpContextAccessor();
             services.AddScoped<ITwitterClientFactory, TwitterClientFactory>();
-            services.AddScoped<ITwitterClient>(x => x.GetService<ITwitterClientFactory>().Create());
-            
+            services.AddScoped<ITwitterClient>(x => x.GetService<ITwitterClientFactory>()!.Create());
+
+            services.AddTransient<IJwtService, JwtService>();
             services.AddTransient<ITwitterService, TwitterService>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ITimelineService, TimelineService>();
-            
+
             return services;
         }
     }
