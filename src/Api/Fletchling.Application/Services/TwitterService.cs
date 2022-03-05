@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Fletchling.Application.Interfaces.Services;
 using Fletchling.Domain.ApiModels;
+using Microsoft.Extensions.Logging;
 using Tweetinvi;
 
 namespace Fletchling.Application.Services
@@ -9,10 +10,12 @@ namespace Fletchling.Application.Services
     public class TwitterService : ITwitterService
     {
         private readonly ITwitterClient _client;
+        private readonly ILogger<TwitterService> _logger;
 
-        public TwitterService(ITwitterClient client)
+        public TwitterService(ITwitterClient client, ILogger<TwitterService> logger)
         {
             _client = client;
+            _logger = logger;
         }
 
         public async Task<List<TwitterUser>> SearchUsersAsync(string username)

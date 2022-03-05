@@ -29,41 +29,26 @@ namespace Fletchling.Application.Services
 
         public TwitterClient Create()
         {
-            // Default Twitter credentials
-            var credentials = new TwitterCredentials(_credentials);
-
-            if (_contextAccessor?.HttpContext == null)
+            if (_contextAccessor?.HttpContext == null || !_contextAccessor.HttpContext.User.Identity!.IsAuthenticated)
             {
-                // Use default twitter credentials
-                return new TwitterClient(credentials);
+                return null;
             }
-
+            
             var userContext = _contextAccessor.HttpContext.User;
+            
+            // Get AccessToken and RefreshToken from UserContext
+            var accessToken = userContext.Claims.Where(x => x.Type == "AccessToken")
+                                         .Select(x => x.Value)
+                                         .FirstOrDefault();
+            var refreshToken = userContext.Claims.Where(x => x.Type == "RefreshToken")
+                                          .Select(x => x.Value)
+                                          .FirstOrDefault();
 
-            // Replace with authenticated user's Twitter credentials
-            if (userContext.Identity is { IsAuthenticated: true })
+            var credentials = new TwitterCredentials(_credentials)
             {
-                var uid = userContext.Claims.Where(x => x.Type == "user_id")
-                                     .Select(x => x.Value)
-                                     .FirstOrDefault();
-
-                try
-                {
-                    var task = Task.Run<User>(async () => await _userRepo.GetUserAsync(uid));
-                    var user = task.Result;
-
-                    if (user != null)
-                    {
-                        credentials.AccessToken = user.AccessToken;
-                        credentials.AccessTokenSecret = user.AccessTokenSecret;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    // swallow all exceptions and use the default twitter credentials
-                    _logger.LogError(ex, "Error while getting authenticated user's Twitter credentials.");
-                }
-            }
+                AccessToken = accessToken,
+                AccessTokenSecret = refreshToken
+            };
 
             return new TwitterClient(credentials);
         }

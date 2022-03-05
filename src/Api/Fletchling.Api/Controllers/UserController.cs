@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Fletchling.Application.Interfaces.Services;
 using Fletchling.Domain.ApiModels.Requests;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Fletchling.Api.Controllers
 {

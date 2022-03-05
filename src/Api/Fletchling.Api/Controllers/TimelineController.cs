@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Fletchling.Api.Constants;
 using Fletchling.Application.Exceptions;
 using Fletchling.Application.Interfaces.Services;
 using Fletchling.Domain.ApiModels.Requests;
@@ -11,8 +12,8 @@ using Fletchling.Domain.Entities;
 
 namespace Fletchling.Api.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
+    [Authorize]
     [ApiController]
     public class TimelineController : ControllerBase
     {
@@ -47,7 +48,7 @@ namespace Fletchling.Api.Controllers
         [HttpPatch]
         public async Task<ActionResult> SetTimelinesInGroup([FromBody] SetTimelineRequest request)
         {
-            var authResult = await _authService.AuthorizeAsync(User, request, "OwnerPolicy");
+            var authResult = await _authService.AuthorizeAsync(User, request.UID, AuthPolicyConstants.OwnerPolicy);
 
             if (!authResult.Succeeded)
             {
