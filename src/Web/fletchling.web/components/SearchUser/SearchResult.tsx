@@ -16,7 +16,7 @@ const SearchResult = ({ user }: Props) => {
   const handleOnClick = async () => {
     let arr: string[] = [];
 
-    if (isSaved()) {
+    if (isSaved) {
       arr = savedTimelines.filter((a) => a !== user.username);
     } else {
       arr = savedTimelines.concat(user.username);
@@ -25,7 +25,7 @@ const SearchResult = ({ user }: Props) => {
     await updateSavedTimelines(arr);
   };
 
-  const isSaved = () => savedTimelines.includes(user.username);
+  const isSaved = false; //() => savedTimelines.includes(user.username);
 
   return (
     <div className='bg-gray-600 hover:bg-gray-700 p-2 border-1'>
@@ -52,7 +52,7 @@ const SearchResult = ({ user }: Props) => {
         </div>
 
         <HeartButton
-          isSaved={isSaved()}
+          isSaved={false /* isSaved() */}
           onClick={async () => {
             await handleOnClick();
           }}

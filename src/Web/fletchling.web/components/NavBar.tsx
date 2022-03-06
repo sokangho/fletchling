@@ -1,8 +1,7 @@
 import { useSession } from 'next-auth/client';
 
-import TwitterSignInButton from '@/components/Buttons/TwitterSignInButton';
 import Logo from '@/components/Logo';
-import Search from '@/components/SearchUser/Search';
+import SearchUser from '@/components/SearchUser/';
 import TwitterUser from '@/interfaces/TwitterUser';
 
 import UserProfileMenu from './UserProfileMenu/UserProfileMenu';
@@ -13,7 +12,7 @@ const NavBar = () => {
   return (
     <div className='flex gap-3 justify-between items-center p-2 bg-twitter-dark'>
       <Logo />
-      <Search />
+      <SearchUser />
       {session && <UserProfileMenu user={session.twitterUser as TwitterUser} />}
     </div>
   );

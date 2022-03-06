@@ -1,6 +1,8 @@
 import NextAuth from 'next-auth';
 import Providers from 'next-auth/providers';
+import apiService from 'services/apiService';
 
+import { CreateJwtRequest } from '@/interfaces/ApiRequests';
 import TwitterUser from '@/interfaces/TwitterUser';
 
 export default NextAuth({
@@ -17,18 +19,10 @@ export default NextAuth({
     secret: process.env.NEXTAUTH_JWT_SECRET
   },
   callbacks: {
-    // Put Twitter's access token in jwt
-    async jwt(token, user, account, profile, isNewUser) {
-      if (account?.accessToken) {
-        token.accessToken = account.accessToken;
-      }
-
-      if (account?.refreshToken) {
-        token.refreshToken = account.refreshToken;
-      }
-
-      if (profile) {
-        const user: TwitterUser = {
+    async signIn(user, account, profile) {
+      if (account.provider === 'twitter') {
+        console.log(user);
+        const authenticatedUser: TwitterUser = {
           id: profile['id_str'] as string,
           username: profile['screen_name'] as string,
           displayName: profile['name'] as string,
@@ -36,18 +30,39 @@ export default NextAuth({
           profileUrl: '',
           profileImageUrl: profile['profile_image_url_https'] as string
         };
-        token.user = user;
+        user.details = authenticatedUser;
+
+        const createJwtRequest: CreateJwtRequest = {
+          twitterUserId: authenticatedUser.id,
+          accessToken: account.accessToken,
+          refreshToken: account.refreshToken as string
+        };
+
+        // Get jwt from backend api
+        const jwt = await apiService.createJwt(createJwtRequest);
+        user.jwt = jwt;
+
+        return true;
       }
 
-      // console.log('token', JSON.stringify(token, null, 2));
-      // console.log('user', JSON.stringify(user, null, 2));
-      // console.log('account', JSON.stringify(account, null, 2));
-      // console.log('profile', JSON.stringify(profile, null, 2));
+      return false;
+    },
+
+    async jwt(token, user, account, profile, isNewUser) {
+      // user is only available on sign in
+      // Get user details and jwt from sign in callback
+      if (user) {
+        token.authenticatedUser = user.details;
+        token.jwt = user.jwt;
+      }
+
       return token;
     },
+
     async session(session, token) {
-      session.twitterUser = token.user;
-      console.log(session);
+      // Store authenticated user's details in session
+      session.twitterUser = token.authenticatedUser;
+      session.jwt = token.jwt;
       return session;
     }
   }

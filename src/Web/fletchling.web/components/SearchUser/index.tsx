@@ -4,7 +4,7 @@ import { ChangeEvent, useCallback, useEffect, useRef, useState } from 'react';
 import SearchBox from '@/components/SearchUser/SearchBox';
 import SearchResultList from '@/components/SearchUser/SearchResultList';
 
-const Search = () => {
+const SearchUser = () => {
   const [shouldRender, setShouldRender] = useState<boolean>(false);
   const [username, setUsername] = useState('');
   const [usernameQuery, setUsernameQuery] = useState('');
@@ -60,4 +60,4 @@ const Search = () => {
   );
 };
 
-export default Search;
+export default SearchUser;

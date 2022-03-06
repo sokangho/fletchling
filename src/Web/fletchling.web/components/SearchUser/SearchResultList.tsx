@@ -1,9 +1,11 @@
-import { ReactChild, ReactChildren, useContext } from 'react';
+import { useSession } from 'next-auth/client';
+import { ReactChild, ReactChildren } from 'react';
+import { useQuery } from 'react-query';
 import ClipLoader from 'react-spinners/ClipLoader';
+import apiService from 'services/apiService';
 
 import SearchResult from '@/components/SearchUser/SearchResult';
 import TwitterUser from '@/interfaces/TwitterUser';
-import useFetch from '@/lib/useFetch';
 
 const ClipLoaderCss = `
   display: block;
@@ -24,20 +26,25 @@ const WrappingDiv = ({ children }: WrappingDivProps) => {
 };
 
 const SearchResultList = ({ username }: Props) => {
-  // const {
-  //   globalState: { currentUser }
-  // } = useContext(GlobalStateContext);
-  // const token = currentUser?.token;
+  const [session, sessionLoading] = useSession();
 
-  const { data, error, loading } = useFetch<TwitterUser[]>(
-    `/twitter/user/search?username=${username}`,
-    'token'
-  );
+  if (sessionLoading) {
+    return (
+      <WrappingDiv>
+        <ClipLoader loading={true} css={ClipLoaderCss} size={30} color='grey' />
+      </WrappingDiv>
+    );
+  }
+
+  const { data, error, isLoading } = useQuery('searchUsers', async () => {
+    const users = await apiService.searchTwitterUser({ username, jwt: session?.jwt as string });
+    return users;
+  });
 
   if (error) return <WrappingDiv>failed to load</WrappingDiv>;
 
   // Loading
-  if (loading) {
+  if (isLoading) {
     return (
       <WrappingDiv>
         <ClipLoader loading={true} css={ClipLoaderCss} size={30} color='grey' />
