@@ -48,7 +48,7 @@ namespace Fletchling.Api.Controllers
         [HttpPatch]
         public async Task<ActionResult> SetTimelinesInGroup([FromBody] SetTimelineRequest request)
         {
-            var authResult = await _authService.AuthorizeAsync(User, request.UID, AuthPolicyConstants.OwnerPolicy);
+            var authResult = await _authService.AuthorizeAsync(User, request.UID, AuthPolicyConstants.OWNER_POLICY);
 
             if (!authResult.Succeeded)
             {

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Fletchling.Api.Constants;
 using Fletchling.Application.Interfaces.Services;
 using Fletchling.Domain.ApiModels;
+using Fletchling.Domain.ApiModels.Responses;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,7 +22,7 @@ namespace Fletchling.Api.Controllers
             _twitterService = twitterService;
         }
 
-        [Route(RouteConstants.TwitterRoutes.GetUser)]
+        [Route(RouteConstants.TwitterRoutes.GET_USER)]
         [HttpGet]
         public async Task<ActionResult<TwitterUser>> GetTwitterUser([FromQuery, Required] long twitterUserId)
         {
@@ -29,12 +30,12 @@ namespace Fletchling.Api.Controllers
             return Ok(user);
         }
 
-        [Route(RouteConstants.TwitterRoutes.SearchUsers)]
+        [Route(RouteConstants.TwitterRoutes.SEARCH_USER)]
         [HttpGet]
-        public async Task<ActionResult<List<TwitterUser>>> SearchTwitterUser([FromQuery, Required] string username)
+        public async Task<ActionResult<SearchTwitterUserResponse>> SearchTwitterUser([FromQuery, Required] string username)
         {
             var users = await _twitterService.SearchUsersAsync(username);
-            return Ok(users);
+            return Ok(new SearchTwitterUserResponse { Users = users });
         }
     }
 }

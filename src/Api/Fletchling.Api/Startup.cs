@@ -66,7 +66,7 @@ namespace Fletchling.Api
             services.AddSingleton<IAuthorizationHandler, IsOwnerAuthorizationHandler>();
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(AuthPolicyConstants.OwnerPolicy,
+                options.AddPolicy(AuthPolicyConstants.OWNER_POLICY,
                     policy => policy.AddRequirements(new IsOwnerRequirement()));
             });
 
